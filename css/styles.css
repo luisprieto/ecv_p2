@@ -1,0 +1,9 @@
+.background-chess{
+	background-image: url(../img/background-chess.jpg);
+	background-repeat: no-repeat;
+  	background-size: 100%;
+}
+
+.low-alpha{
+	background-color: rgba(0,0,0,0.7);
+}
