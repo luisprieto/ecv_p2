@@ -2,11 +2,17 @@ var folder_games = "resources/"
 var games_files = ["beliavsky_nunn_1985", "byrne_fischer_1956", "ivanchuk_yusupov_1991", "karpov_kasparov_1985", "rotlewi_rubinstein_1907"];
 var chess = new Chess();
 var title = '';
+var boards = [];
 
-function showMovesList(moves)
+function showMovesList()
 {
-	for(var i=0; i<moves.length; i++)
-		$("#moves-list").append($("<li class='list-group-item' id=" + moves[i] + "><a href='#'>" + moves[i] + "</li>"));
+	var new_chess = new Chess();
+	for(var i=0; i<chess.history().length; i++){
+		$("#moves-list").append($("<li class='list-group-item' id='board-" +i + "'><a href='#'>" + chess.history()[i] + "</li>"));
+		
+		new_chess.move(chess.history()[i]);
+		boards.push(new_chess.ascii());
+	}
 }
 
 $( document ).ready(function() {
@@ -28,4 +34,16 @@ $( document ).ready(function() {
 		$("#div-detail").show();
 		$("#div-detail").addClass("show");
 	}).bind(this);
+
+$('body').on('click', '#moves-list li', function(){
+		$("#canvas").html("");
+  		var id = $(this).attr('id');
+  		id = id.split("-")[1];
+  		var board = boards[id].split("\n");
+  		for(var i=0; i<board.length; i++)
+  		{
+  			$("#canvas").append(board[i]);
+  			$("#canvas").append("<br>");
+  		}
+  }).bind(this);
 });
