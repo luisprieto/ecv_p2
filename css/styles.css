@@ -1,3 +1,7 @@
+body{
+	height: 100%;
+}
+
 .background-chess{
 	background-image: url(../img/background-chess.jpg);
 	background-repeat: no-repeat;
@@ -6,4 +10,45 @@
 
 .low-alpha{
 	background-color: rgba(0,0,0,0.7);
+}
+
+#div-detail{
+	display:none;
+}
+#div-detail.show{
+	display: table-cell !important;
+}
+
+#div-detail a{
+	color: #000 !important;
+}
+
+.detail-container{
+	margin: 0 auto;
+	width: 1000px;
+}
+
+#div-settings{
+	width: 200px;
+}
+
+#canvas {
+    width: 500px;
+    height: 500px;
+    margin: 0 80px;
+}
+
+#div-moves{
+	width:100px;
+	overflow: scroll;
+	height: 500px;
+}
+
+#div-detail .cover > div{
+	float: left;
+}
+
+#game-title{
+	margin: 20px;
+	font-size: 30px;
 }

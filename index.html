@@ -5,14 +5,13 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 	<link href="css/cover.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script src="js/three.min.js"></script>
 </head>
 <body class="background-chess">
 
 <div class="site-wrapper low-alpha">
 
-      <div class="site-wrapper-inner">
+      <div id="div-home" class="site-wrapper-inner">
 
         <div class="cover-container">
 
@@ -24,12 +23,7 @@
              	<!-- Single button -->
 					<div class="btn-group">
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Select a chess game<span class="caret"></span></button>
-					  <ul class="dropdown-menu" role="menu">
-					    <li><a href="#">Anatoly Karpov vs Garry Kasparov</a></li>
-					    <li><a href="#">Anatoly Karpov vs Garry Kasparov</a></li>
-					    <li><a href="#">Anatoly Karpov vs Garry Kasparov</a></li>
-					    <li class="divider"></li>
-					    <li><a href="#">Separated link</a></li>
+					  <ul class="dropdown-menu" role="menu" id="game-selection">
 					  </ul>
 					</div>
             </p>
@@ -40,23 +34,34 @@
               <p>Entornos de Comunicación Virtual, by Ricardo Navarro & Luis Prieto.</p>
             </div>
           </div>
-
         </div>
-
       </div>
+    
 
+    <div id="div-detail" class="site-wrapper-inner">
+    	<div class="detail-container">
+    			<div id="game-title"></div>
+    			<div class="inner cover">
+				    <div id="div-settings">
+				      Opciones (pendiente...)
+				    </div>
+				    <div id="canvas">
+				      
+				   	</div>
+				    <div id="div-moves">
+				    	<ul id="moves-list" class="list-group">
+				  		</ul>
+				    </div>
+				</div>
+  		</div>
     </div>
-
-
-<!--<script src="js/three.min.js"></script>
+</div>
 <script>
 
 //global variables
 var renderer;
 var scene;
 var camera;
-
-var ROT_SPEED = 0.01;
 
 function createBox(){
 	var boxGeometry = new THREE.BoxGeometry(6,4,6); //height width depth
@@ -91,9 +96,11 @@ function createLight() {
 
 
 function createRenderer() {
+	var container = document.getElementById( 'canvas' );
+
 	renderer = new THREE.WebGLRenderer();
 	renderer.setClearColor(0x000000, 1.0);
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize(500, 500);
 	renderer.shadowMapEnabled = true;
 }
 
@@ -114,23 +121,17 @@ function init() {
 
 	createRenderer();
 	createCamera();
-	//createBox();
-	//createPlane();
-	createEarthSphere();
+	createBox();
+	createPlane();
 	createLight();
 
-	cameraControl = new THREE.OrbitControls(camera);
-
-	document.body.appendChild(renderer.domElement);
+	var container = document.getElementById( 'canvas' );
+	container.appendChild(renderer.domElement);
 	render();
 }
 
 //infinite loop
 function render() {
-
-	cameraControl.update();
-	scene.getObjectByName('earth').rotation.y += ROT_SPEED;
-
 	renderer.render(scene, camera);
 	requestAnimationFrame(render);
 }
@@ -138,6 +139,11 @@ function render() {
 
 init();
 
-</script>-->
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/chess.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
 </body>
 </html>
