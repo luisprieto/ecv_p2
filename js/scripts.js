@@ -70,7 +70,6 @@ $(document).ready(function () {
     ChessViewer.prototype.bakeChess = function () {
         var history = this.chess.history({verbose: true});
         var bb = this.bakedBoard;
-        //bb.push(initial_state.slice(0));
         bb.push(clone(initial_state));
 
         for(var i in history) {
@@ -79,7 +78,6 @@ $(document).ready(function () {
                 var last = bb.length - 1;
 
                 //clone last turn state
-                //var t = bb[last].slice(0);
                 var t = clone(bb[last]);
 
                 //fill current turn data
@@ -89,8 +87,8 @@ $(document).ready(function () {
                     color: h.color,
                     flags: h.flags,
                     moves: t[h.from],
-                    captured: t[h.to]
-                    //data.promotion: ??? TODO: check promotion
+                    captured: t[h.to],
+                    promotion: h.promotion
                 };
 
                 //move piece
@@ -149,13 +147,13 @@ $(document).ready(function () {
 
     var initial_state = {
         data: {
-            from: null,
-            to: null,
-            color: null,
-            flags: null,
-            moves: null,
-            captured: null
-            //data.promotion: null
+            from: undefined,
+            to: undefined,
+            color: undefined,
+            flags: undefined,
+            moves: undefined,
+            captured: undefined,
+            promotion: undefined
         },
 
         a1: "white_rook1",
