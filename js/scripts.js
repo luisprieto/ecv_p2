@@ -16,6 +16,7 @@ $(document).ready(function () {
         this.games_files = ["beliavsky_nunn_1985", "byrne_fischer_1956", "ivanchuk_yusupov_1991", "karpov_kasparov_1985", "rotlewi_rubinstein_1907"];
         this.title = '';
         this.boards = [];
+        this.bakedBoard = [];
 
         this.chess = undefined;
 
@@ -59,6 +60,36 @@ $(document).ready(function () {
         }
     };
 
+    ChessViewer.prototype.bakeChess = function () {
+        var history = this.chess.history({verbose: true});
+        var bb = this.bakedBoard;
+        //bb.push(initial_state.slice(0));
+        bb.push(clone(initial_state));
+
+        for(var i in history) {
+            if(history.hasOwnProperty(i)) {
+                var h = history[i];
+                var last = bb.length - 1;
+
+                //clone last turn state
+                //var t = bb[last].slice(0);
+                var t = clone(bb[last]);
+
+                //fill current turn
+                t.move = {};
+                t.move.from = h.from;
+                t.move.to = h.to;
+
+                //move piece
+                t[h.to] = t[h.from];
+                t[h.from] = null;
+
+                //TODO: captures
+                bb.push(t);
+            }
+        }
+    };
+
     /**
      * @this ChessViewer
      * @param event
@@ -81,6 +112,7 @@ $(document).ready(function () {
         var pgn = data.split("\n");
         this.chess.load_pgn(pgn.join('\n'));
         this.showMovesList();
+        this.bakeChess();
         var title = this.chess.header().Black + " vs " + this.chess.header().White;
         $("#game-title").append(title);
     }
@@ -174,4 +206,8 @@ $(document).ready(function () {
         h8: "black_rook2"
     };
 
+
+    function clone(object) {
+        return jQuery.extend({}, object);
+    }
 })(window);
