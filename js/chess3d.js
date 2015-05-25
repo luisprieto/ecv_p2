@@ -35,7 +35,6 @@
     };
 
     Chess3d.prototype.start = function () {
-        console.log(this.container);
         this.container.appendChild(this.renderer.domElement);
         this.render();
     };
@@ -101,11 +100,10 @@
             break;
         }
 
-        var board_coord = {x: posx, z: posz};
-        return board_coord;
+        return {x: posx, z: posz};
     };
 
-    Chess3d.prototype.movePiece = function(id, to)
+    Chess3d.prototype.movePiece = function(id, to, captured)
     {
         var object = this.objects[id];
 
@@ -113,6 +111,10 @@
         
         object.position.x = board_coord.x;
         object.position.z = board_coord.z;
+        if(captured) {
+            var piece = this.objects[captured];
+            this.scene.remove(piece);
+        }
     };
 
     Chess3d.prototype.setPiece = function(id, coord)
@@ -354,8 +356,7 @@
     function loadModelCallback(id, offset, rotation, object) {
         object.position.y = offset;
         object.rotation.y += Math.PI*rotation;
-        //setPiece(object, "a2");
-        //this.scene.add( object );
+        object.name = id;
         this.objects[id] = object;
     }
 

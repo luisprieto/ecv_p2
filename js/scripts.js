@@ -19,6 +19,7 @@ $(document).ready(function () {
         this.boards = [];
         this.bakedBoard = [];
         this.currentTurn = 0;
+        this.speed = 1000;
 
         this.chess = undefined;
 
@@ -59,8 +60,23 @@ $(document).ready(function () {
     ChessViewer.prototype.startChess = function () {
         this.chess3d.start();
         this.setChess(0);
-        this.timer = setInterval(this.nextMove.bind(this), 5000);
     };
+
+    ChessViewer.prototype.resumeChess = function () {
+        clearInterval(this.timer);
+        this.timer = setInterval(this.nextMove.bind(this), this.speed);
+    };
+
+    ChessViewer.prototype.pauseChess = function () {
+        clearInterval(this.timer);
+    };
+
+    ChessViewer.prototype.setSpeed = function (speed) {
+        this.speed = speed;
+        clearInterval(this.timer);
+        this.timer = setInterval(this.nextMove.bind(this), this.speed);
+    };
+
 
     /**
      * @this ChessViewer
@@ -108,6 +124,40 @@ $(document).ready(function () {
                 t[h.to] = t[h.from];
                 t[h.from] = null;
 
+                //Castling
+                if(h.flags == "k") {
+                    if(h.color == "w") {
+                        t.data.castling_from = "h1";
+                        t.data.castling_to = "f1";
+                        t.data.castling_moves = t["h1"];
+                        t["f1"] = t["h1"];
+                        t["h1"] = null;
+                    }
+                    else {
+                        t.data.castling_from = "h8";
+                        t.data.castling_to = "f8";
+                        t.data.castling_moves = t["h8"];
+                        t["f8"] = t["h8"];
+                        t["h8"] = null;
+                    }
+                }
+                else if (h.flags == "q") {
+                    if(h.color == "w") {
+                        t.data.castling_from = "aq";
+                        t.data.castling_to = "d1";
+                        t.data.castling_moves = t["a1"];
+                        t["d1"] = t["a1"];
+                        t["a1"] = null;
+                    }
+                    else {
+                        t.data.castling_from = "a8";
+                        t.data.castling_to = "d8";
+                        t.data.castling_moves = t["a8"];
+                        t["d8"] = t["a8"];
+                        t["a8"] = null;
+                    }
+                }
+
                 bb.push(t);
             }
         }
@@ -126,12 +176,18 @@ $(document).ready(function () {
     };
 
     ChessViewer.prototype.nextMove = function () {
-        this.currentTurn++;
-        console.log("Current turn: " + this.currentTurn);
-        var board = this.bakedBoard[this.currentTurn];
-        var data = board.data;
-        if(data.moves && data.from && data.to)
-            this.chess3d.movePiece(data.moves, data.to);
+        var length = this.bakedBoard.length - 1;
+        if(this.currentTurn >= length) clearTimeout(this.timer);
+        else {
+            this.currentTurn++;
+            var board = this.bakedBoard[this.currentTurn];
+            var data = board.data;
+            if (data.moves && data.from && data.to) {
+                this.chess3d.movePiece(data.moves, data.to, data.captured);
+                if(data.castling_from && data.castling_to)
+                    this.chess3d.movePiece(data.castling_moves, data.castling_to);
+            }
+        }
     };
 
     /**
@@ -158,7 +214,6 @@ $(document).ready(function () {
      */
     function on_gameSelection(event) {
         var t = event.currentTarget;
-        console.log(t.id);
         var file = this.folder_games + $(t).attr('id') + ".pgn";
         $.get(file, get_pgn.bind(this), 'text');
         $("#div-home").hide();
