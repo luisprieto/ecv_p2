@@ -103,6 +103,17 @@ $(document).ready(function () {
         }
     };
 
+    ChessViewer.prototype.setChess = function (turn) {
+        var board = this.bakedBoard[turn];
+        for(var i in board) {
+            if(i != "data") {
+                var id = board[i];
+                if(id != null) this.chess3d.setPiece(id, i)
+            }
+
+        }
+    };
+
     /**
      * @this ChessViewer
      * @memberof ChessViewer

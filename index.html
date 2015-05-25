@@ -68,7 +68,7 @@ var scene;
 var camera;
 
 var keyboard = new THREEx.KeyboardState();
-var clock = new THREE.Clock()
+var clock = new THREE.Clock();
 
 var positions = {};
 positions["a1"] = {x:375, z:380};
@@ -126,7 +126,7 @@ function createRenderer() {
 function createCamera() {
 	camera = new THREE.PerspectiveCamera(
 			45,
-			window.innerWidth / window.innerHeight,
+			500 / 500,
 			0.1, 10000);
 	camera.position.x = 500;
 	camera.position.y = 1000;
@@ -366,7 +366,6 @@ init();
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!--<script type="text/javascript" src="js/three.js"></script>-->
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/chess.js"></script>
 <script type="text/javascript" src="js/chess3d.js"></script>
