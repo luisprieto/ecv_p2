@@ -65,7 +65,7 @@
         //console.log(this.container.offsetHeight, this.container.offsetHeight);
         //this.renderer.setSize(this.container.offsetHeight, this.container.offsetHeight);
         this.renderer.setSize(500,500);
-        renderer.shadowMapEnabled = true;
+        this.renderer.shadowMapEnabled = true;
 
     };
 
@@ -86,9 +86,9 @@
             45,
             500 / 500,
             0.1, 1000);
-        camera.position.x = 500;
-        camera.position.y = 1000;
-        camera.position.z = 0;
+        this.camera.position.x = 500;
+        this.camera.position.y = 1000;
+        this.camera.position.z = 0;
         this.camera.lookAt(this.scene.position);
     };
 
@@ -98,7 +98,7 @@
      */
     Chess3d.prototype.createLights = function () {
         var light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
-        scene.add( light );
+        this.scene.add( light );
     };
 
     /**
@@ -135,7 +135,7 @@
         var floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.position.y = -0.5;
         floor.rotation.x = Math.PI / 2;
-        scene.add(floor);
+        this.scene.add(floor);
         this.objects["board"] = floor;
     };
 
