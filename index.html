@@ -1,59 +1,58 @@
 <html>
 <head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	<link href="css/cover.css" rel="stylesheet">
-	<script src="js/three.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/cover.css" rel="stylesheet">
 </head>
 <body class="background-chess">
 
 <div class="site-wrapper low-alpha">
 
-      <div id="div-home" class="site-wrapper-inner">
+    <div id="div-home" class="site-wrapper-inner">
 
         <div class="cover-container">
 
-          <div class="inner cover">
-            <h1 class="cover-heading">CHESS</h1>
-            <img src="img/chess_piece.png" style="width: 35px;">
-            <p class="lead">Here you can visualize some of the best chess games ever.</p>
-            <p class="lead">
-             	<!-- Single button -->
-					<div class="btn-group">
-					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Select a chess game<span class="caret"></span></button>
-					  <ul class="dropdown-menu" role="menu" id="game-selection">
-					  </ul>
-					</div>
-            </p>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Entornos de Comunicación Virtual, by Ricardo Navarro & Luis Prieto.</p>
+            <div class="inner cover">
+                <h1 class="cover-heading">CHESS</h1>
+                <img src="img/chess_piece.png" style="width: 35px;">
+                <p class="lead">Here you can visualize some of the best chess games ever.</p>
+                <p class="lead">
+                    <!-- Single button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Select a chess game<span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" id="game-selection">
+                    </ul>
+                </div>
+                </p>
             </div>
-          </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>Entornos de Comunicación Virtual, by Ricardo Navarro & Luis Prieto.</p>
+                </div>
+            </div>
         </div>
-      </div>
-    
+    </div>
+
 
     <div id="div-detail" class="site-wrapper-inner">
-    	<div class="detail-container">
-    			<div id="game-title"></div>
-    			<div class="inner cover">
-				    <div id="div-settings">
-				      Opciones (pendiente...)
-				    </div>
-				    <div id="canvas">
-				      
-				   	</div>
-				    <div id="div-moves">
-				    	<ul id="moves-list" class="list-group">
-				  		</ul>
-				    </div>
-				</div>
-  		</div>
+        <div class="detail-container">
+            <div id="game-title"></div>
+            <div class="inner cover">
+                <div id="div-settings">
+                    Opciones (pendiente...)
+                </div>
+                <div id="canvas">
+
+                </div>
+                <div id="div-moves">
+                    <ul id="moves-list" class="list-group">
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--<script>
@@ -142,8 +141,10 @@ init();
 </script>-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/three.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/chess.js"></script>
+<script type="text/javascript" src="js/chess3d.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
 </body>
 </html>

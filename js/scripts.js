@@ -35,7 +35,7 @@ $(document).ready(function () {
     ChessViewer.prototype.init = function () {
         //Get html elements
         this._select =  $("#game-selection");
-        this._canvas = $("#canvas");
+        this._canvas = $("#canvas")[0];
 
         //init chess
         this.chess = new Chess();
@@ -46,7 +46,10 @@ $(document).ready(function () {
         }
 
         $(this._select).find("> li").click(on_gameSelection.bind(this));
-        $('body').on('click', '#moves-list li', on_listClick.bind(this));
+        //$('body').on('click', '#moves-list li', on_listClick.bind(this));
+
+        this.chess3d = new Chess3d(this._canvas);
+        this.chess3d.init();
     };
 
     /**
@@ -113,6 +116,8 @@ $(document).ready(function () {
         var header = this.chess.header();
         this.title = header.Black + " vs " + header.White;
         $("#game-title").append(this.title);
+
+        this.chess3d.start();
     }
 
     /**
