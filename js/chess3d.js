@@ -35,7 +35,6 @@
     };
 
     Chess3d.prototype.start = function () {
-        console.log(this.container);
         this.container.appendChild(this.renderer.domElement);
         this.render();
     };

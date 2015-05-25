@@ -105,6 +105,41 @@ $(document).ready(function () {
                 t[h.to] = t[h.from];
                 t[h.from] = null;
 
+                //Castling
+
+                if(h.flags == "k") {
+                    if(h.color == "w") {
+                        t.data.castling_from = "h1";
+                        t.data.castling_to = "f1";
+                        t.data.castling_moves = t["h1"];
+                        t["f1"] = t["h1"];
+                        t["h1"] = null;
+                    }
+                    else {
+                        t.data.castling_from = "h8";
+                        t.data.castling_to = "f8";
+                        t.data.castling_moves = t["h8"];
+                        t["f8"] = t["h8"];
+                        t["h8"] = null;
+                    }
+                }
+                else if (h.flags == "q") {
+                    if(h.color == "w") {
+                        t.data.castling_from = "aq";
+                        t.data.castling_to = "d1";
+                        t.data.castling_moves = t["a1"];
+                        t["d1"] = t["a1"];
+                        t["a1"] = null;
+                    }
+                    else {
+                        t.data.castling_from = "a8";
+                        t.data.castling_to = "d8";
+                        t.data.castling_moves = t["a8"];
+                        t["d8"] = t["a8"];
+                        t["a8"] = null;
+                    }
+                }
+
                 bb.push(t);
             }
         }
@@ -123,12 +158,19 @@ $(document).ready(function () {
     };
 
     ChessViewer.prototype.nextMove = function () {
-        this.currentTurn++;
-        console.log("Current turn: " + this.currentTurn);
-        var board = this.bakedBoard[this.currentTurn];
-        var data = board.data;
-        if(data.moves && data.from && data.to)
-            this.chess3d.movePiece(data.moves, data.to, data.captured);
+        var length = this.bakedBoard.length - 1;
+        if(this.currentTurn >= length) clearTimeout(this.timer);
+        else {
+            this.currentTurn++;
+            var board = this.bakedBoard[this.currentTurn];
+            var data = board.data;
+            if (data.moves && data.from && data.to) {
+                this.chess3d.movePiece(data.moves, data.to, data.captured);
+                if(data.castling_from && data.castling_to)
+                    this.chess3d.movePiece(data.castling_moves, data.castling_to);
+                console.log(data.captured);
+            }
+        }
     };
 
     /**
@@ -155,7 +197,6 @@ $(document).ready(function () {
      */
     function on_gameSelection(event) {
         var t = event.currentTarget;
-        console.log(t.id);
         var file = this.folder_games + $(t).attr('id') + ".pgn";
         $.get(file, get_pgn.bind(this), 'text');
         $("#div-home").hide();
