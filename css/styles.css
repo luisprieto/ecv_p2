@@ -40,7 +40,7 @@ body{
 
 #div-moves{
 	width:100px;
-	overflow: scroll;
+	overflow: auto;
 	height: 500px;
 }
 

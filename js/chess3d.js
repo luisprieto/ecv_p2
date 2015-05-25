@@ -10,20 +10,12 @@
         this.renderer = undefined;
         this.scene = undefined;
         this.camera = undefined;
+        this.controls = undefined;
         this.container = container;
         this.render = render.bind(this);
         this.objects = {};
 
-        this.positions = {
-            a1: {x:375, z:380},
-            a2: {x:375, z:270},
-            a3: {x:375, z:160},
-            a4: {x:375, z:50},
-            a5: {x:375, z:-50},
-            a6: {x:375, z:-160},
-            a7: {x:375, z:-270},
-            a8: {x:375, z:-380}
-        };
+        this.square_size = 134;
 
     }
 
@@ -44,15 +36,81 @@
 
     Chess3d.prototype.start = function () {
         console.log(this.container);
-        //this.container.appendChild(this.renderer.domElement);
+        this.container.appendChild(this.renderer.domElement);
         this.render();
     };
+
+    Chess3d.prototype.movePiece = function(id, from, to)
+    {
+
+    }
 
     Chess3d.prototype.setPiece = function(id, coord)
     {
         var object = this.objects[id];
-        object.position.x = positions[coord].x;
-        object.position.z = positions[coord].z;
+        var square_size = this.square_size;
+        var posx;
+        var posz;
+        var l = coord[0];
+        var n = coord[1];
+        switch(l)
+        {
+            case 'a':
+                posz = square_size*3.5;
+            break;
+            case 'b':
+                posz = square_size*2.5;
+            break;
+            case 'c':
+                posz = square_size*1.5;
+            break;
+            case 'd':
+                posz = square_size*0.5;
+            break;
+            case 'e':
+                posz = square_size*-0.5;
+            break;
+            case 'f':
+                posz = square_size*-1.5;
+            break;
+            case 'g':
+                posz = square_size*-2.5;
+            break;
+            case 'h':
+                posz = square_size*-3.5;
+            break;
+        }
+        switch(n)
+        {
+            case '1':
+                posx = square_size*3.5;
+            break;
+            case '2':
+                posx = square_size*2.5;
+            break;
+            case '3':
+                posx = square_size*1.5;
+            break;
+            case '4':
+                posx = square_size*0.5;
+            break;
+            case '5':
+                posx = square_size*-0.5;
+            break;
+            case '6':
+                posx = square_size*-1.5;
+            break;
+            case '7':
+                posx = square_size*-2.5;
+            break;
+            case '8':
+                posx = square_size*-3.5;
+            break;
+        }
+        object.position.x = posx;
+        object.position.z = posz;
+
+        this.scene.add(object);
     };
 
     /**
@@ -85,11 +143,13 @@
         this.camera = new THREE.PerspectiveCamera(
             45,
             500 / 500,
-            0.1, 1000);
+            0.1, 10000);
         this.camera.position.x = 500;
         this.camera.position.y = 1000;
         this.camera.position.z = 0;
         this.camera.lookAt(this.scene.position);
+
+        this.controls = new THREE.OrbitControls( this.camera );
     };
 
     /**
@@ -97,8 +157,13 @@
      * @this Chess3d
      */
     Chess3d.prototype.createLights = function () {
-        var light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
-        this.scene.add( light );
+        var ambient_light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+        this.scene.add( ambient_light );
+
+        // create a light
+        var light = new THREE.PointLight(0xffffff);
+        light.position.set(0,250,0);
+        this.scene.add(light);
     };
 
     /**
@@ -131,7 +196,7 @@
 
         // DoubleSide: render texture on both sides of mesh
         var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-        var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+        var floorGeometry = new THREE.PlaneGeometry(1200, 1200, 1, 1);
         var floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.position.y = -0.5;
         floor.rotation.x = Math.PI / 2;
@@ -144,12 +209,16 @@
             this.loadModel(
                 'resources/models/pawn_1.obj',
                 'resources/models/pawn_1.mtl',
-                "white_pawn" + i
+                "white_pawn" + i,
+                55,
+                1
             );
             this.loadModel(
                 'resources/models/pawn_2.obj',
                 'resources/models/pawn_2.mtl',
-                "black_pawn" + i
+                "black_pawn" + i,
+                55,
+                1
             );
         }
     };
@@ -159,12 +228,16 @@
             this.loadModel(
                 'resources/models/rook_1.obj',
                 'resources/models/rook_1.mtl',
-                "white_rook" + i
+                "white_rook" + i,
+                65,
+                1
             );
             this.loadModel(
                 'resources/models/rook_2.obj',
                 'resources/models/rook_2.mtl',
-                "black_rook" + i
+                "black_rook" + i,
+                65,
+                1
             );
         }
     };
@@ -174,12 +247,16 @@
             this.loadModel(
                 'resources/models/knight_1.obj',
                 'resources/models/knight_1.mtl',
-                "white_knight" + i
+                "white_knight" + i,
+                85,
+                3/2
             );
             this.loadModel(
                 'resources/models/knight_2.obj',
                 'resources/models/knight_2.mtl',
-                "black_knight" + i
+                "black_knight" + i,
+                85,
+                3/2
             );
         }
     };
@@ -189,12 +266,16 @@
             this.loadModel(
                 'resources/models/bishop_1.obj',
                 'resources/models/bishop_1.mtl',
-                "white_bishop" + i
+                "white_bishop" + i,
+                90,
+                1
             );
             this.loadModel(
                 'resources/models/bishop_2.obj',
                 'resources/models/bishop_2.mtl',
-                "black_bishop" + i
+                "black_bishop" + i,
+                90,
+                1
             );
         }
     };
@@ -203,12 +284,16 @@
         this.loadModel(
             'resources/models/queen_1.obj',
             'resources/models/queen_1.mtl',
-            "white_queen"
+            "white_queen",
+            108,
+            1
         );
         this.loadModel(
             'resources/models/queen_2.obj',
             'resources/models/queen_2.mtl',
-            "black_queen"
+            "black_queen",
+            108,
+            1
         );
     };
 
@@ -216,31 +301,27 @@
         this.loadModel(
             'resources/models/king_1.obj',
             'resources/models/king_1.mtl',
-            "white_king"
+            "white_king",
+            124,
+            1
         );
         this.loadModel(
             'resources/models/king_2.obj',
             'resources/models/king_2.mtl',
-            "black_king"
+            "black_king",
+            124,
+            1
         );
     };
 
-    Chess3d.prototype.loadModel = function(obj, mtl, id) {
+    Chess3d.prototype.loadModel = function(obj, mtl, id, offset, rotation) {
         this.loader.load(
             // OBJ resource URL
             obj,
             // MTL resource URL
             mtl,
             // Function when both resources are loaded
-            loadModelCallback.bind(this, id)/*,
-            // Function called when downloads progress
-            function ( xhr ) {
-                console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-            },
-            // Function called when downloads error
-            function ( xhr ) {
-                console.log( 'An error happened' );
-            }*/
+            loadModelCallback.bind(this, id, offset, rotation)
         );
     };
 
@@ -249,16 +330,18 @@
      * @this Chess3d
      */
     function render () {
+        this.controls.update();
+
         this.renderer.render(this.scene, this.camera);
 
         requestAnimationFrame(this.render);
     }
 
-    function loadModelCallback(id, object) {
-        console.log(id, object);
-        object.position.y = 100;
+    function loadModelCallback(id, offset, rotation, object) {
+        object.position.y = offset;
+        object.rotation.y += Math.PI*rotation;
         //setPiece(object, "a2");
-        this.scene.add( object );
+        //this.scene.add( object );
         this.objects[id] = object;
     }
 

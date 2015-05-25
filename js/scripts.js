@@ -108,7 +108,7 @@ $(document).ready(function () {
         for(var i in board) {
             if(i != "data") {
                 var id = board[i];
-                if(id != null) this.chess3d.setPiece(id, i)
+                if(id != null) this.chess3d.setPiece(id, i);
             }
 
         }
@@ -129,6 +129,7 @@ $(document).ready(function () {
         $("#game-title").append(this.title);
 
         this.chess3d.start();
+        this.setChess(0);
     }
 
     /**
