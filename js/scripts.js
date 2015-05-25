@@ -75,16 +75,21 @@ $(document).ready(function () {
                 //var t = bb[last].slice(0);
                 var t = clone(bb[last]);
 
-                //fill current turn
-                t.move = {};
-                t.move.from = h.from;
-                t.move.to = h.to;
+                //fill current turn data
+                t.data = {
+                    from: h.from,
+                    to: h.to,
+                    color: h.color,
+                    flags: h.flags,
+                    moves: t[h.from],
+                    captured: t[h.to]
+                    //data.promotion: ??? TODO: check promotion
+                };
 
                 //move piece
                 t[h.to] = t[h.from];
                 t[h.from] = null;
 
-                //TODO: captures
                 bb.push(t);
             }
         }
@@ -113,8 +118,8 @@ $(document).ready(function () {
         this.chess.load_pgn(pgn.join('\n'));
         this.showMovesList();
         this.bakeChess();
-        var title = this.chess.header().Black + " vs " + this.chess.header().White;
-        $("#game-title").append(title);
+        this.title = this.chess.header().Black + " vs " + this.chess.header().White;
+        $("#game-title").append(this.title);
     }
 
     /**
@@ -132,7 +137,16 @@ $(document).ready(function () {
     }
 
     var initial_state = {
-        move: undefined,
+        data: {
+            from: null,
+            to: null,
+            color: null,
+            flags: null,
+            moves: null,
+            captured: null
+            //data.promotion: null
+        },
+
         a1: "white_rook1",
         a2: "white_pawn1",
         a3: null,
