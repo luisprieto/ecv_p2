@@ -9,6 +9,7 @@ $(document).ready(function () {
     /**
      * @class
      * @this ChessViewer
+     * @global
      * @return ChessViewer
      */
     function ChessViewer() {
@@ -29,6 +30,7 @@ $(document).ready(function () {
 
     /**
      * @this ChessViewer
+     * @memberof ChessViewer
      */
     ChessViewer.prototype.init = function () {
         //Get html elements
@@ -49,6 +51,7 @@ $(document).ready(function () {
 
     /**
      * @this ChessViewer
+     * @memberof ChessViewer
      */
     ChessViewer.prototype.showMovesList = function() {
         var new_chess = new Chess();
@@ -60,6 +63,10 @@ $(document).ready(function () {
         }
     };
 
+    /**
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.bakeChess = function () {
         var history = this.chess.history({verbose: true});
         var bb = this.bakedBoard;
@@ -97,6 +104,7 @@ $(document).ready(function () {
 
     /**
      * @this ChessViewer
+     * @memberof ChessViewer
      * @param event
      */
     function on_gameSelection(event) {
@@ -111,6 +119,7 @@ $(document).ready(function () {
 
     /**
      * @this ChessViewer
+     * @memberof ChessViewer
      * @param data
      */
     function get_pgn(data) {
@@ -124,6 +133,7 @@ $(document).ready(function () {
 
     /**
      * @this ChessViewer
+     * @memberof ChessViewer
      * @param event
      */
     function on_listClick(event) {
@@ -224,4 +234,5 @@ $(document).ready(function () {
     function clone(object) {
         return jQuery.extend({}, object);
     }
+
 })(window);
