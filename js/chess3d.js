@@ -105,7 +105,7 @@
         return board_coord;
     };
 
-    Chess3d.prototype.movePiece = function(id, to)
+    Chess3d.prototype.movePiece = function(id, to, captured)
     {
         var object = this.objects[id];
 
@@ -113,6 +113,10 @@
         
         object.position.x = board_coord.x;
         object.position.z = board_coord.z;
+        if(captured) {
+            var captured = this.objects[captured];
+            this.scene.remove(captured);
+        }
     };
 
     Chess3d.prototype.setPiece = function(id, coord)
@@ -270,6 +274,7 @@
                 'resources/models/knight_2.mtl',
                 "black_knight" + i,
                 85,
+                3/2
             );
         }
     };

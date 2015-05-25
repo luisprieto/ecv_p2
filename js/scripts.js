@@ -56,7 +56,7 @@ $(document).ready(function () {
     ChessViewer.prototype.startChess = function () {
         this.chess3d.start();
         this.setChess(0);
-        this.timer = setInterval(this.nextMove.bind(this), 5000);
+        this.timer = setInterval(this.nextMove.bind(this), 1000);
     };
 
     /**
@@ -128,7 +128,7 @@ $(document).ready(function () {
         var board = this.bakedBoard[this.currentTurn];
         var data = board.data;
         if(data.moves && data.from && data.to)
-            this.chess3d.movePiece(data.moves, data.to);
+            this.chess3d.movePiece(data.moves, data.to, data.captured);
     };
 
     /**
