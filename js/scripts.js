@@ -20,6 +20,7 @@ $(document).ready(function () {
         this.bakedBoard = [];
         this.currentTurn = 0;
         this.speed = 1000;
+        this.timer = null;
 
         this.chess = undefined;
 
@@ -51,26 +52,30 @@ $(document).ready(function () {
         //$('body').on('click', '#moves-list li', on_listClick.bind(this));
 
         this.chess3d = new Chess3d(this._canvas);
+        this.chess3d.on_ready = chess3d_ready.bind(this);
         this.chess3d.init();
     };
 
     ChessViewer.prototype.startChess = function () {
         this.chess3d.start();
         this.setChess(0);
+        this.resumeChess();
+
     };
 
     ChessViewer.prototype.resumeChess = function () {
-        clearInterval(this.timer);
+        this.pauseChess();
         this.timer = setInterval(this.nextMove.bind(this), this.speed);
     };
 
     ChessViewer.prototype.pauseChess = function () {
-        clearInterval(this.timer);
+        if(this.timer == null) clearInterval(this.timer);
+        this.timer = null;
     };
 
     ChessViewer.prototype.setSpeed = function (speed) {
         this.speed = speed;
-        clearInterval(this.timer);
+        this.pauseChess();
         this.timer = setInterval(this.nextMove.bind(this), this.speed);
     };
 
@@ -168,7 +173,6 @@ $(document).ready(function () {
                 var id = board[i];
                 if(id != null) this.chess3d.setPiece(id, i);
             }
-
         }
     };
 
@@ -231,6 +235,10 @@ $(document).ready(function () {
         for (var i = 0; i < board.length; i++) {
             $(this._canvas).append(board[i]).append("<br>");
         }
+    }
+
+    function chess3d_ready() {
+        this.startChess();
     }
 
     var initial_state = {

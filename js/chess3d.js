@@ -14,8 +14,11 @@
         this.container = container;
         this.render = render.bind(this);
         this.objects = {};
+        this.loadedObjects = 0;
 
         this.square_size = 134;
+
+        this.on_ready = undefined;
 
     }
 
@@ -358,6 +361,9 @@
         object.rotation.y += Math.PI*rotation;
         object.name = id;
         this.objects[id] = object;
+
+        this.loadedObjects++;
+        if (this.loadedObjects >= 32 && this.on_ready) this.on_ready();
     }
 
 
