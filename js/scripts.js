@@ -105,21 +105,6 @@ $(document).ready(function () {
     /**
      * @this ChessViewer
      * @memberof ChessViewer
-     * @param event
-     */
-    function on_gameSelection(event) {
-        console.log(event);
-        //console.log(event.target.id);
-        console.log(event.currentTarget.id);
-        var file = this.folder_games + $(event.currentTarget).attr('id') + ".pgn";
-        $.get(file, get_pgn.bind(this), 'text');
-        $("#div-home").hide();
-        $("#div-detail").show().addClass("show");
-    }
-
-    /**
-     * @this ChessViewer
-     * @memberof ChessViewer
      * @param data
      */
     function get_pgn(data) {
@@ -127,7 +112,8 @@ $(document).ready(function () {
         this.chess.load_pgn(pgn.join('\n'));
         this.showMovesList();
         this.bakeChess();
-        this.title = this.chess.header().Black + " vs " + this.chess.header().White;
+        var header = this.chess.header();
+        this.title = header.Black + " vs " + header.White;
         $("#game-title").append(this.title);
     }
 
@@ -136,9 +122,24 @@ $(document).ready(function () {
      * @memberof ChessViewer
      * @param event
      */
+    function on_gameSelection(event) {
+        var t = event.currentTarget;
+        console.log(t.id);
+        var file = this.folder_games + $(t).attr('id') + ".pgn";
+        $.get(file, get_pgn.bind(this), 'text');
+        $("#div-home").hide();
+        $("#div-detail").show().addClass("show");
+    }
+
+    /**
+     * @this ChessViewer
+     * @memberof ChessViewer
+     * @param event
+     */
     function on_listClick(event) {
+        var t = event.currentTarget;
         $(this._canvas).html("");
-        var id = $(event.currentTarget).attr('id');
+        var id = $(t).attr('id');
         id = id.split("-")[1];
         var board = this.boards[id].split("\n");
         for (var i = 0; i < board.length; i++) {
