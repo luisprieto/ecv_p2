@@ -18,6 +18,7 @@ $(document).ready(function () {
         this.title = '';
         this.boards = [];
         this.bakedBoard = [];
+        this.currentTurn = 0;
 
         this.chess = undefined;
 
@@ -50,6 +51,12 @@ $(document).ready(function () {
 
         this.chess3d = new Chess3d(this._canvas);
         this.chess3d.init();
+    };
+
+    ChessViewer.prototype.startChess = function () {
+        this.chess3d.start();
+        this.setChess(0);
+        this.timer = setInterval(this.nextMove.bind(this), 5000);
     };
 
     /**
@@ -104,14 +111,24 @@ $(document).ready(function () {
     };
 
     ChessViewer.prototype.setChess = function (turn) {
+        this.currentTurn = turn;
         var board = this.bakedBoard[turn];
         for(var i in board) {
-            if(i != "data") {
+            if(i != "data" && board.hasOwnProperty(i)) {
                 var id = board[i];
                 if(id != null) this.chess3d.setPiece(id, i);
             }
 
         }
+    };
+
+    ChessViewer.prototype.nextMove = function () {
+        this.currentTurn++;
+        console.log("Current turn: " + this.currentTurn);
+        var board = this.bakedBoard[this.currentTurn];
+        var data = board.data;
+        if(data.moves && data.from && data.to)
+            this.chess3d.movePiece(data.moves, data.to);
     };
 
     /**
@@ -128,8 +145,7 @@ $(document).ready(function () {
         this.title = header.Black + " vs " + header.White;
         $("#game-title").append(this.title);
 
-        this.chess3d.start();
-        this.setChess(0);
+        this.startChess();
     }
 
     /**
