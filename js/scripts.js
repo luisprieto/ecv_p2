@@ -19,6 +19,7 @@ $(document).ready(function () {
         this.boards = [];
         this.bakedBoard = [];
         this.currentTurn = 0;
+        this.speed = 1000;
 
         this.chess = undefined;
 
@@ -56,8 +57,23 @@ $(document).ready(function () {
     ChessViewer.prototype.startChess = function () {
         this.chess3d.start();
         this.setChess(0);
-        this.timer = setInterval(this.nextMove.bind(this), 1000);
     };
+
+    ChessViewer.prototype.resumeChess = function () {
+        clearInterval(this.timer);
+        this.timer = setInterval(this.nextMove.bind(this), this.speed);
+    };
+
+    ChessViewer.prototype.pauseChess = function () {
+        clearInterval(this.timer);
+    };
+
+    ChessViewer.prototype.setSpeed = function (speed) {
+        this.speed = speed;
+        clearInterval(this.timer);
+        this.timer = setInterval(this.nextMove.bind(this), this.speed);
+    };
+
 
     /**
      * @this ChessViewer
@@ -106,7 +122,6 @@ $(document).ready(function () {
                 t[h.from] = null;
 
                 //Castling
-
                 if(h.flags == "k") {
                     if(h.color == "w") {
                         t.data.castling_from = "h1";
@@ -168,7 +183,6 @@ $(document).ready(function () {
                 this.chess3d.movePiece(data.moves, data.to, data.captured);
                 if(data.castling_from && data.castling_to)
                     this.chess3d.movePiece(data.castling_moves, data.castling_to);
-                console.log(data.captured);
             }
         }
     };

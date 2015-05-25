@@ -100,8 +100,7 @@
             break;
         }
 
-        var board_coord = {x: posx, z: posz};
-        return board_coord;
+        return {x: posx, z: posz};
     };
 
     Chess3d.prototype.movePiece = function(id, to, captured)
@@ -357,8 +356,7 @@
     function loadModelCallback(id, offset, rotation, object) {
         object.position.y = offset;
         object.rotation.y += Math.PI*rotation;
-        //setPiece(object, "a2");
-        //this.scene.add( object );
+        object.name = id;
         this.objects[id] = object;
     }
 
