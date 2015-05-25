@@ -51,8 +51,15 @@ $(document).ready(function () {
         $(this._select).find("> li").click(on_gameSelection.bind(this));
         //$('body').on('click', '#moves-list li', on_listClick.bind(this));
 
-        $('body').on('click', '#btn-play', on_btnPlayClick.bind(this));
-        $('body').on('click', '#btn-pause', on_btnPauseClick.bind(this));
+        $('body')
+            .on('click', '#btn-play',     on_btnPlayClick.bind(this))
+            .on('click', '#btn-pause',    on_btnPauseClick.bind(this))
+            .on('click', '#btn-incSpeed', on_btnIncreaseSpeed.bind(this))
+            .on('click', '#btn-decSpeed', on_btnDecreaseSpeed.bind(this))
+            .on('click', '#btn-next',     on_btnNext.bind(this))
+            .on('click', '#btn-precious', on_btnPrevious.bind(this));
+
+        on_btnIncreaseSpeed
 
         this.chess3d = new Chess3d(this._canvas);
         this.chess3d.on_ready = chess3d_ready.bind(this);
@@ -62,7 +69,7 @@ $(document).ready(function () {
     ChessViewer.prototype.startChess = function () {
         this.chess3d.start();
         this.setChess(0);
-        this.resumeChess();
+        //this.resumeChess();
 
     };
 
@@ -72,16 +79,17 @@ $(document).ready(function () {
     };
 
     ChessViewer.prototype.pauseChess = function () {
-        if(this.timer == null) clearInterval(this.timer);
+        if(this.timer != null) clearInterval(this.timer);
         this.timer = null;
     };
 
     ChessViewer.prototype.setSpeed = function (speed) {
         this.speed = speed;
-        this.pauseChess();
-        this.timer = setInterval(this.nextMove.bind(this), this.speed);
+        if(this.timer) {
+            this.pauseChess();
+            this.timer = setInterval(this.nextMove.bind(this), this.speed);
+        }
     };
-
 
     /**
      * @this ChessViewer
@@ -229,7 +237,7 @@ $(document).ready(function () {
      * @memberof ChessViewer
      * @param event
      */
-    function on_listClick(event) {
+    function on_listClick (event) {
         var t = event.currentTarget;
         $(this._canvas).html("");
         var id = $(t).attr('id');
@@ -240,18 +248,44 @@ $(document).ready(function () {
         }
     }
 
-    function chess3d_ready() {
-        this.startChess();
+    function chess3d_ready () {
+        $("#btn-loading").fadeOut();
+        $("#btn-dropdown").delay(400).fadeIn();
+        //this.startChess();
     }
 
-    function on_btnPlayClick(event){
+    function on_btnPlayClick () {
         $('#btn-play').hide();
         $('#btn-pause').show();
+        $('#btn-next').prop('disabled', true);
+        $('#btn-previous').prop('disabled', true);
+        this.resumeChess();
     }
 
-    function on_btnPauseClick(event){
+    function on_btnPauseClick () {
         $('#btn-play').show();
         $('#btn-pause').hide();
+        $('#btn-next').prop('disabled', false);
+        $('#btn-previous').prop('disabled', false);
+        this.pauseChess();
+    }
+
+    function on_btnIncreaseSpeed () {
+        if(this.speed <= 5500) this.setSpeed(this.speed + 500);
+        console.log(this.speed);
+    }
+
+    function on_btnDecreaseSpeed () {
+        if(this.speed >= 1500) this.setSpeed(this.speed - 500);
+        console.log(this.speed);
+    }
+
+    function on_btnPrevious () {
+        this.previousMove();
+    }
+
+    function on_btnNext () {
+        this.nextMove();
     }
 
     var initial_state = {
