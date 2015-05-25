@@ -40,14 +40,7 @@
         this.render();
     };
 
-    Chess3d.prototype.movePiece = function(id, from, to)
-    {
-
-    }
-
-    Chess3d.prototype.setPiece = function(id, coord)
-    {
-        var object = this.objects[id];
+    Chess3d.prototype.getBoardCoord = function(coord){
         var square_size = this.square_size;
         var posx;
         var posz;
@@ -107,8 +100,29 @@
                 posx = square_size*-3.5;
             break;
         }
-        object.position.x = posx;
-        object.position.z = posz;
+
+        var board_coord = {x: posx, z: posz};
+        return board_coord;
+    };
+
+    Chess3d.prototype.movePiece = function(id, to)
+    {
+        var object = this.objects[id];
+
+        var board_coord = this.getBoardCoord(to);
+        
+        object.position.x = board_coord.x;
+        object.position.z = board_coord.z;
+    };
+
+    Chess3d.prototype.setPiece = function(id, coord)
+    {
+        var object = this.objects[id];
+
+        var board_coord = this.getBoardCoord(coord);
+        
+        object.position.x = board_coord.x;
+        object.position.z = board_coord.z;
 
         this.scene.add(object);
     };
@@ -119,7 +133,7 @@
      */
     Chess3d.prototype.createRenderer = function () {
         this.renderer =  new THREE.WebGLRenderer();
-        this.renderer.setClearColor(0x000000, 1.0);
+        this.renderer.setClearColor(0x708B9B, 1.0);
         //console.log(this.container.offsetHeight, this.container.offsetHeight);
         //this.renderer.setSize(this.container.offsetHeight, this.container.offsetHeight);
         this.renderer.setSize(500,500);
