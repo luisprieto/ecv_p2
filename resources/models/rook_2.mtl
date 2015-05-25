@@ -1,0 +1,16 @@
+# 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
+# File Created: 25.05.2015 12:41:44
+
+newmtl wooddark1
+	Ns 4.7377
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.1616 0.0414 0.0022
+	Ks 0.6235 0.6392 0.5608
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Chess\wooddark1.jpg
+	map_Kd Chess\wooddark1.jpg

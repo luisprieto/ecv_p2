@@ -1,10 +1,15 @@
 <html>
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="css/cover.css" rel="stylesheet">
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="css/cover.css" rel="stylesheet">
+	<script src="js/three.js"></script>
+	<script src="js/DDSLoader.js"></script>
+	<script src="js/MTLLoader.js"></script>
+	<script src="js/OBJMTLLoader.js"></script>
+	<script src="js/THREEx.KeyboardState.js"></script>
 </head>
 <body class="background-chess">
 
@@ -55,12 +60,25 @@
         </div>
     </div>
 </div>
-<!--<script>
+<script>
 
 //global variables
 var renderer;
 var scene;
 var camera;
+
+var keyboard = new THREEx.KeyboardState();
+var clock = new THREE.Clock()
+
+var positions = {};
+positions["a1"] = {x:375, z:380};
+positions["a2"] = {x:375, z:270};
+positions["a3"] = {x:375, z:160};
+positions["a4"] = {x:375, z:50};
+positions["a5"] = {x:375, z:-50};
+positions["a6"] = {x:375, z:-160};
+positions["a7"] = {x:375, z:-270};
+positions["a8"] = {x:375, z:-380};
 
 function createBox(){
 	var boxGeometry = new THREE.BoxGeometry(6,4,6); //height width depth
@@ -73,24 +91,26 @@ function createBox(){
 }
 
 function createPlane() {
-	var planeGeometry = new THREE.PlaneGeometry(20, 20);
-	var planeMaterial = new THREE.MeshLambertMaterial({
-		color: 0xcccccc
-	});
-	var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-	plane.receiveShadow = true;
-	plane.rotation.x = -0.5 * Math.PI;
-	plane.position.y = -2;
-	scene.add(plane);
+	///////////
+	// FLOOR //
+	///////////
+	
+	// note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
+	var floorTexture = new THREE.ImageUtils.loadTexture( 'resources/chessboard.jpg' );
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+
+	// DoubleSide: render texture on both sides of mesh
+	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+	var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+	floor.position.y = -0.5;
+	floor.rotation.x = Math.PI / 2;
+	scene.add(floor);
 }
 
 function createLight() {
-	var spotLight = new THREE.SpotLight(0xffffff);
-	spotLight.position.set(10, 20, 20);
-	spotLight.shadowCameraNear = 20;
-       spotLight.shadowCameraFar = 50;
-	spotLight.castShadow = true;
-	scene.add(spotLight);
+	var light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+	scene.add( light );
 }
 
 
@@ -107,11 +127,17 @@ function createCamera() {
 	camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
-			0.1, 1000);
-	camera.position.x = 90;
-	camera.position.y = 32;
-	camera.position.z = 32;
+			0.1, 10000);
+	camera.position.x = 500;
+	camera.position.y = 1000;
+	camera.position.z = 0;
 	camera.lookAt(scene.position);
+}
+
+function setPiece(object, coord)
+{
+	object.position.x = positions[coord].x;
+	object.position.z = positions[coord].z;
 }
 
 
@@ -120,9 +146,190 @@ function init() {
 
 	createRenderer();
 	createCamera();
-	createBox();
+	//createBox();
 	createPlane();
 	createLight();
+
+
+	// instantiate a loader
+	var loader = new THREE.OBJMTLLoader();
+
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/rook_1.obj',
+		// MTL resource URL
+		'resources/models/rook_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a1");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/bishop_1.obj',
+		// MTL resource URL
+		'resources/models/bishop_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a2");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/knight_1.obj',
+		// MTL resource URL
+		'resources/models/knight_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a3");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/king_1.obj',
+		// MTL resource URL
+		'resources/models/king_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a4");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/queen_1.obj',
+		// MTL resource URL
+		'resources/models/queen_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a5");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/knight_1.obj',
+		// MTL resource URL
+		'resources/models/knight_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a6");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/bishop_1.obj',
+		// MTL resource URL
+		'resources/models/bishop_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a7");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
+
+	// load an obj / mtl resource pair
+	loader.load(
+		// OBJ resource URL
+		'resources/models/rook_1.obj',
+		// MTL resource URL
+		'resources/models/rook_1.mtl',
+		// Function when both resources are loaded
+		function ( object ) {
+			object.position.y = 100;
+			setPiece(object, "a8");
+			scene.add( object );
+		},
+		// Function called when downloads progress
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when downloads error
+		function ( xhr ) {
+			console.log( 'An error happened' );
+		}
+	);
 
 	var container = document.getElementById( 'canvas' );
 	container.appendChild(renderer.domElement);
@@ -133,15 +340,33 @@ function init() {
 function render() {
 	renderer.render(scene, camera);
 	requestAnimationFrame(render);
+
+	var delta = clock.getDelta(); // seconds.
+	var moveDistance = 200 * delta; // 200 pixels per second
+	
+	// local transformations
+
+	// move forwards/backwards/left/right
+	if ( keyboard.pressed("W") )
+		camera.translateZ( -moveDistance );
+	if ( keyboard.pressed("S") )
+		camera.translateZ(  moveDistance );	
+
+	// rotate left/right/up/down
+	var rotation_matrix = new THREE.Matrix4().identity();
+	if ( keyboard.pressed("A") )
+		camera.translateX(  -moveDistance );
+	if ( keyboard.pressed("D") )
+		camera.translateX(  moveDistance );
 }
 
 
 init();
 
-</script>-->
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" src="js/three.js"></script>
+<!--<script type="text/javascript" src="js/three.js"></script>-->
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/chess.js"></script>
 <script type="text/javascript" src="js/chess3d.js"></script>
