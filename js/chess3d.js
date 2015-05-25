@@ -270,6 +270,7 @@
                 'resources/models/knight_2.mtl',
                 "black_knight" + i,
                 85,
+                5/2
             );
         }
     };

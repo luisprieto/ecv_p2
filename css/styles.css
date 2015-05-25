@@ -30,6 +30,7 @@ body{
 
 #div-settings{
 	width: 200px;
+	font-size: 20px;
 }
 
 #canvas {
@@ -51,4 +52,21 @@ body{
 #game-title{
 	margin: 20px;
 	font-size: 30px;
+}
+
+#btn-pause{
+	display:none;
+}
+
+.lead{
+	  margin: 20px 0;
+}
+
+.glyphicon-knight{
+	font-size: 40px;
+}
+
+.settings-module{
+	margin:20px 0;
+	font-size: 14px;
 }

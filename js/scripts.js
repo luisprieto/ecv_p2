@@ -49,6 +49,9 @@ $(document).ready(function () {
         $(this._select).find("> li").click(on_gameSelection.bind(this));
         //$('body').on('click', '#moves-list li', on_listClick.bind(this));
 
+        $('body').on('click', '#btn-play', on_btnPlayClick.bind(this));
+        $('body').on('click', '#btn-pause', on_btnPauseClick.bind(this));
+
         this.chess3d = new Chess3d(this._canvas);
         this.chess3d.init();
     };
@@ -176,6 +179,16 @@ $(document).ready(function () {
         for (var i = 0; i < board.length; i++) {
             $(this._canvas).append(board[i]).append("<br>");
         }
+    }
+
+    function on_btnPlayClick(event){
+        $('#btn-play').hide();
+        $('#btn-pause').show();
+    }
+
+    function on_btnPauseClick(event){
+        $('#btn-play').show();
+        $('#btn-pause').hide();
     }
 
     var initial_state = {
