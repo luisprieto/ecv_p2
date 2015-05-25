@@ -114,8 +114,8 @@
         object.position.x = board_coord.x;
         object.position.z = board_coord.z;
         if(captured) {
-            var captured = this.objects[captured];
-            this.scene.remove(captured);
+            var piece = this.objects[captured];
+            this.scene.remove(piece);
         }
     };
 
