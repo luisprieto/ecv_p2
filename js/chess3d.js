@@ -180,6 +180,7 @@
             if(i != "board" && this.objects.hasOwnProperty(i)){
                 var piece = this.objects[i];
                 piece.visible = false;
+                piece.rotation.x = 0;
             }
         }
     };
