@@ -200,7 +200,7 @@ $(document).ready(function () {
             if (data.moves && data.from && data.to) {
                 this.chess3d.movePiece(data.moves, data.from, data.to, data.captured);
                 if(data.castling_from && data.castling_to)
-                    this.chess3d.movePiece(data.castling_moves, data.castling_to);
+                    this.chess3d.movePiece(data.castling_moves, data.castling_from, data.castling_to);
             }
         }
     };
@@ -213,7 +213,7 @@ $(document).ready(function () {
             if (data.moves && data.from && data.to) {
                 this.chess3d.movePiece(data.moves, data.to, data.from, data.captured, true);
                 if(data.castling_from && data.castling_to)
-                    this.chess3d.movePiece(data.castling_moves, data.castling_from);
+                    this.chess3d.movePiece(data.castling_moves, data.castling_to, data.castling_from);
             }
 
             this.currentTurn--;
