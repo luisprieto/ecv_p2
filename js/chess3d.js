@@ -15,7 +15,7 @@
         this.render = render.bind(this);
         this.objects = {};
         this.loadedObjects = 0;
-        this.speed_anim = 700;
+        //this.speed_anim = 700;
         this.square_size = 134;
 
         this.on_ready = undefined;
@@ -177,7 +177,7 @@
 
     Chess3d.prototype.clearBoard = function(){
         for(var i in this.objects){
-            if(i != "board"){
+            if(i != "board" && this.objects.hasOwnProperty(i)){
                 var piece = this.objects[i];
                 piece.visible = false;
             }
@@ -420,10 +420,6 @@
         pivot.add(object);
         pivot.name = id;
         this.objects[id] = pivot;
-
-        var material = object.material;
-
-
 
         //object.position.y = offset;
         //object.translateY(offset);
