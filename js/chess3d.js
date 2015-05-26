@@ -15,7 +15,7 @@
         this.render = render.bind(this);
         this.objects = {};
         this.loadedObjects = 0;
-
+        this.speed_anim = 700;
         this.square_size = 134;
 
         this.on_ready = undefined;
@@ -106,20 +106,50 @@
         return {x: posx, z: posz};
     };
 
-    Chess3d.prototype.movePiece = function(id, to, captured, show)
+    Chess3d.prototype.movePiece = function(id, to, captured, show, speed)
     {
+        speed = speed || 700;
         var object = this.objects[id];
-
         var board_coord = this.getBoardCoord(to);
-        
-        object.position.x = board_coord.x;
-        object.position.z = board_coord.z;
+
+        var position = {x: object.position.x, z: object.position.z};
+        var target = {x: board_coord.x, z: board_coord.z};
+        var tween = new TWEEN.Tween(position).to(target, speed);
+        tween.onUpdate(function() {
+            object.position.x = this.x;
+            object.position.z = this.z;
+        });
+
+        var c_tween = undefined;
         if(captured) {
             var piece = this.objects[captured];
+
+            var c_position;
+            var c_target;
+            if(!show) {
+                c_position = {angle: 0};
+                c_target = {angle: Math.PI / 2};
+            }
+            else {
+                c_position = {angle: Math.PI / 2};
+                c_target = {angle: 0};
+                piece.visible = !!show;
+            }
+            c_tween = new TWEEN.Tween(c_position).to(c_target, 500);
+            c_tween.onUpdate(function() {
+                console.log(this);
+                console.log(this.angle);
+                piece.rotation.x = this.angle;
+            });
+            c_tween.onComplete(function() {
+                piece.visible = !!show;
+            });
             //if(!show) this.scene.remove(piece);
-            piece.visible = !!show;
 
         }
+        tween.start();
+        if(c_tween) c_tween.delay(speed - 500).start();
+
     };
 
     Chess3d.prototype.setPiece = function(id, coord)
@@ -350,19 +380,31 @@
      * @memberof Chess3d
      * @this Chess3d
      */
-    function render () {
+    function render (time) {
         this.controls.update();
-
         this.renderer.render(this.scene, this.camera);
 
         requestAnimationFrame(this.render);
+        TWEEN.update(time);
     }
 
     function loadModelCallback(id, offset, rotation, object) {
+
+
+        var pivot = new THREE.Object3D();
         object.position.y = offset;
         object.rotation.y += Math.PI*rotation;
-        object.name = id;
-        this.objects[id] = object;
+        pivot.add(object);
+        pivot.name = id;
+        this.objects[id] = pivot;
+
+
+
+        //object.position.y = offset;
+        //object.translateY(offset);
+        //object.rotation.y += Math.PI*rotation;
+        //object.name = id;
+        //this.objects[id] = object;
 
         this.loadedObjects++;
         if (this.loadedObjects >= 32 && this.on_ready) this.on_ready();
