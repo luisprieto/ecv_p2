@@ -71,6 +71,15 @@ $(document).ready(function () {
 
     };
 
+    ChessViewer.prototype.reset = function () {
+        this.pauseChess();
+        this.title = '';
+        this.bakedBoard = [];
+        this.currentTurn = 0;
+        this.setSpeed(1000);
+        this.chess3d.clearBoard();
+    };
+
     ChessViewer.prototype.resumeChess = function () {
         this.pauseChess();
         this.timer = setInterval(this.nextMove.bind(this), this.speed);
@@ -284,6 +293,7 @@ $(document).ready(function () {
      * @param event
      */
     function on_gameSelection(event) {
+        this.reset();
         var t = event.currentTarget;
         var file = this.folder_games + $(t).attr('id') + ".pgn";
         $.get(file, get_pgn.bind(this), 'text');
