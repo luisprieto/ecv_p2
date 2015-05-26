@@ -79,6 +79,8 @@ $(document).ready(function () {
         this.currentTurn = 0;
         this.setSpeed(1000);
         this.chess3d.clearBoard();
+        $('#btn-play').show();
+        $('#btn-pause').hide();
     };
 
     ChessViewer.prototype.resumeChess = function () {
