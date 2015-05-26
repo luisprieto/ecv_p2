@@ -35,10 +35,18 @@
         this.createCamera();
         this.createLights();
         this.createChess();
+        window.addEventListener("resize", this.resizeCanvas.bind(this), false);
+    };
+
+    Chess3d.prototype.resizeCanvas = function () {
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+        //this.camera.aspect = this.container.offsetWidth/this.container.offsetHeight;
+        this.createCamera();
     };
 
     Chess3d.prototype.start = function () {
         this.container.appendChild(this.renderer.domElement);
+        this.resizeCanvas();
         this.render();
     };
 
@@ -184,8 +192,9 @@
         this.renderer =  new THREE.WebGLRenderer();
         this.renderer.setClearColor(0x708B9B, 1.0);
         //console.log(this.container.offsetHeight, this.container.offsetHeight);
-        //this.renderer.setSize(this.container.offsetHeight, this.container.offsetHeight);
-        this.renderer.setSize(500,500);
+        console.log(this.container);
+        this.renderer.setSize(this.container.offsetHeight, this.container.offsetHeight);
+        //this.renderer.setSize(500,500);
         this.renderer.shadowMapEnabled = true;
 
     };
@@ -205,7 +214,7 @@
     Chess3d.prototype.createCamera = function () {
         this.camera = new THREE.PerspectiveCamera(
             45,
-            500 / 500,
+            this.container.offsetWidth/this.container.offsetHeight,
             0.1, 10000);
         this.camera.position.x = 500;
         this.camera.position.y = 1000;
