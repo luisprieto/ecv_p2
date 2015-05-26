@@ -168,7 +168,7 @@
         this.camera.position.z = 0;
         this.camera.lookAt(this.scene.position);
 
-        this.controls = new THREE.OrbitControls( this.camera );
+        this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
     };
 
     /**

@@ -57,7 +57,7 @@ $(document).ready(function () {
             .on('click', '#btn-incSpeed', on_btnIncreaseSpeed.bind(this))
             .on('click', '#btn-decSpeed', on_btnDecreaseSpeed.bind(this))
             .on('click', '#btn-next',     on_btnNext.bind(this))
-            .on('click', '#btn-precious', on_btnPrevious.bind(this));
+            .on('click', '#btn-previous', on_btnPrevious.bind(this));
 
         on_btnIncreaseSpeed
 
@@ -199,6 +199,22 @@ $(document).ready(function () {
                 if(data.castling_from && data.castling_to)
                     this.chess3d.movePiece(data.castling_moves, data.castling_to);
             }
+        }
+    };
+
+    ChessViewer.prototype.previousMove = function () {
+        console.log(this.currentTurn);
+        if(this.currentTurn > 0) {
+            var board = this.bakedBoard[this.currentTurn];
+            var data = board.data;
+            if (data.moves && data.from && data.to) {
+                this.chess3d.movePiece(data.moves, data.from, data.captured);
+                //TODO: meter de nuevo pieza capturada al árbol de escena
+                if(data.castling_from && data.castling_to)
+                    this.chess3d.movePiece(data.castling_moves, data.castling_from);
+            }
+
+            this.currentTurn--;
         }
     };
 
