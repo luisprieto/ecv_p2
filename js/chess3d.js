@@ -124,6 +124,7 @@
         var position = {x: object.position.x, z: object.position.z};
         var target = {x: board_coord.x, z: board_coord.z};
         var tween = new TWEEN.Tween(position).to(target, speed);
+        tween.easing(TWEEN.Easing.Quartic.InOut);
         tween.onUpdate(function() {
             object.position.x = this.x;
             object.position.z = this.z;
@@ -148,12 +149,22 @@
                 piece.position.z = board_coord_from.z;
                 piece.visible = !!show;
             }
-            c_tween = new TWEEN.Tween(c_position).to(c_target, 500);
+            c_tween = new TWEEN.Tween(c_position).to(c_target, 750);
+            c_tween.easing(TWEEN.Easing.Exponential.In);
+
             c_tween.onUpdate(function() {
                 piece.rotation.x = this.angle;
             });
             c_tween.onComplete(function() {
-                piece.visible = !!show;
+                var op_tween = new TWEEN.Tween({opacity: 1.0}).to({opacity: 0.0}, 100);
+                op_tween.onUpdate(function() {
+                    //TODO
+                });
+                op_tween.onComplete(function() {
+                    piece.visible = !!show;
+                });
+                op_tween.start();
+                //piece.visible = !!show;
             });
             //if(!show) this.scene.remove(piece);
 
@@ -447,6 +458,7 @@
         object.children.forEach(function(c) {
             c.castShadow = true;
             c.receiveShadow = true;
+            c.material.transparent = true;
         });
         pivot.add(object);
         pivot.name = id;
