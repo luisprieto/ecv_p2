@@ -106,11 +106,12 @@
         return {x: posx, z: posz};
     };
 
-    Chess3d.prototype.movePiece = function(id, to, captured, show, speed)
+    Chess3d.prototype.movePiece = function(id, from, to, captured, show, speed)
     {
         speed = speed || 700;
         var object = this.objects[id];
         var board_coord = this.getBoardCoord(to);
+        var board_coord_from = this.getBoardCoord(from);
 
         var position = {x: object.position.x, z: object.position.z};
         var target = {x: board_coord.x, z: board_coord.z};
@@ -129,16 +130,18 @@
             if(!show) {
                 c_position = {angle: 0};
                 c_target = {angle: Math.PI / 2};
+                //piece.position.x = board_coord.x;
+                //piece.position.z = board_coord.z;
             }
             else {
                 c_position = {angle: Math.PI / 2};
                 c_target = {angle: 0};
+                piece.position.x = board_coord_from.x;
+                piece.position.z = board_coord_from.z;
                 piece.visible = !!show;
             }
             c_tween = new TWEEN.Tween(c_position).to(c_target, 500);
             c_tween.onUpdate(function() {
-                console.log(this);
-                console.log(this.angle);
                 piece.rotation.x = this.angle;
             });
             c_tween.onComplete(function() {
@@ -394,9 +397,12 @@
         var pivot = new THREE.Object3D();
         object.position.y = offset;
         object.rotation.y += Math.PI*rotation;
+        object.castShadow = true;
         pivot.add(object);
         pivot.name = id;
         this.objects[id] = pivot;
+
+        var material = object.material;
 
 
 

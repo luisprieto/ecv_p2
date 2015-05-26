@@ -195,7 +195,7 @@ $(document).ready(function () {
             var board = this.bakedBoard[this.currentTurn];
             var data = board.data;
             if (data.moves && data.from && data.to) {
-                this.chess3d.movePiece(data.moves, data.to, data.captured);
+                this.chess3d.movePiece(data.moves, data.from, data.to, data.captured);
                 if(data.castling_from && data.castling_to)
                     this.chess3d.movePiece(data.castling_moves, data.castling_to);
             }
@@ -203,12 +203,12 @@ $(document).ready(function () {
     };
 
     ChessViewer.prototype.previousMove = function () {
-        console.log(this.currentTurn);
+        console.log("turn: " + this.currentTurn);
         if(this.currentTurn > 0) {
             var board = this.bakedBoard[this.currentTurn];
             var data = board.data;
             if (data.moves && data.from && data.to) {
-                this.chess3d.movePiece(data.moves, data.from, data.captured, true);
+                this.chess3d.movePiece(data.moves, data.to, data.from, data.captured, true);
                 if(data.castling_from && data.castling_to)
                     this.chess3d.movePiece(data.castling_moves, data.castling_from);
             }
@@ -287,12 +287,12 @@ $(document).ready(function () {
 
     function on_btnIncreaseSpeed () {
         if(this.speed <= 5500) this.setSpeed(this.speed + 500);
-        console.log(this.speed);
+        console.log("speed: " + this.speed);
     }
 
     function on_btnDecreaseSpeed () {
         if(this.speed >= 1500) this.setSpeed(this.speed - 500);
-        console.log(this.speed);
+        console.log("speed: " + this.speed);
     }
 
     function on_btnPrevious () {
