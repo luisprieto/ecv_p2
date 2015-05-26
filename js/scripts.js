@@ -97,8 +97,10 @@ $(document).ready(function () {
      */
     ChessViewer.prototype.showMovesList = function() {
         var new_chess = new Chess();
+        $("#moves-list").append($("<li class='list-group-item' id='board-0'><a href='#'>Init</li>"));
         for (var i = 0; i < this.chess.history().length; i++) {
-            $("#moves-list").append($("<li class='list-group-item' id='board-" + i + "'><a href='#'>" + this.chess.history()[i] + "</li>"));
+            var next = i+1;
+            $("#moves-list").append($("<li class='list-group-item' id='board-" + next + "'><a href='#'>" + this.chess.history()[i] + "</li>"));
 
             new_chess.move(this.chess.history()[i]);
             this.boards.push(new_chess.ascii());
