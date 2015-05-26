@@ -59,8 +59,6 @@ $(document).ready(function () {
             .on('click', '#btn-next',     on_btnNext.bind(this))
             .on('click', '#btn-previous', on_btnPrevious.bind(this));
 
-        on_btnIncreaseSpeed
-
         this.chess3d = new Chess3d(this._canvas);
         this.chess3d.on_ready = chess3d_ready.bind(this);
         this.chess3d.init();
@@ -208,7 +206,7 @@ $(document).ready(function () {
             var board = this.bakedBoard[this.currentTurn];
             var data = board.data;
             if (data.moves && data.from && data.to) {
-                this.chess3d.movePiece(data.moves, data.from, data.captured);
+                this.chess3d.movePiece(data.moves, data.from, data.captured, true);
                 //TODO: meter de nuevo pieza capturada al árbol de escena
                 if(data.castling_from && data.castling_to)
                     this.chess3d.movePiece(data.castling_moves, data.castling_from);

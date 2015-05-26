@@ -106,7 +106,7 @@
         return {x: posx, z: posz};
     };
 
-    Chess3d.prototype.movePiece = function(id, to, captured)
+    Chess3d.prototype.movePiece = function(id, to, captured, show)
     {
         var object = this.objects[id];
 
@@ -116,7 +116,9 @@
         object.position.z = board_coord.z;
         if(captured) {
             var piece = this.objects[captured];
-            this.scene.remove(piece);
+            //if(!show) this.scene.remove(piece);
+            piece.visible = !!show;
+
         }
     };
 
