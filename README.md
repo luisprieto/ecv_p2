@@ -10,7 +10,10 @@
 - Camara siguiendo piezas
 
 ### P3
-- Subir partidas pgn
+- Subir partidas pgn (añadirlas a un repositorio)
+- Enlace descarga partida
 - Anotar en movimientos
-- Posibilidad de jugar?
+  - Posibilidad de votarlos )los usuarios lo hacen relevante o no)
+- Full screen que muestra subtitulos con comentarios relevantes y hace zoom-in en movimientos
+- Posibilidad de jugar? -> generar pgn
 - Chat global y por partida? -> Enviar partidas (enlace) en plan enlace.pgn:5 (turno 5)
