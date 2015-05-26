@@ -125,13 +125,22 @@
     Chess3d.prototype.setPiece = function(id, coord)
     {
         var object = this.objects[id];
-
+        object.visible = true;
         var board_coord = this.getBoardCoord(coord);
         
         object.position.x = board_coord.x;
         object.position.z = board_coord.z;
 
         this.scene.add(object);
+    };
+
+    Chess3d.prototype.clearBoard = function(){
+        for(var i in this.objects){
+            if(i != "board"){
+                var piece = this.objects[i];
+                piece.visible = false;
+            }
+        }
     };
 
     /**
@@ -222,6 +231,7 @@
         floor.position.y = -0.5;
         floor.rotation.x = Math.PI / 2;
         this.scene.add(floor);
+        floor.name = "board";
         this.objects["board"] = floor;
     };
 

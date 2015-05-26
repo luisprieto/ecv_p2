@@ -2,6 +2,10 @@ body{
     height: 100%;
 }
 
+.height68{
+    height: 68px;
+}
+
 .background-chess{
     background-image: url(../img/background-chess.jpg);
     background-repeat: no-repeat;
@@ -14,6 +18,7 @@ body{
 
 #div-detail{
     display:none;
+    padding: 0 100px;
 }
 #div-detail.show{
     display: table-cell !important;
@@ -30,7 +35,7 @@ body{
 
 #div-settings{
     font-size: 20px;
-    width: 500px;
+    width: 237px;
     margin: 0 auto;
 }
 
@@ -41,7 +46,7 @@ body{
 }
 
 #div-moves{
-    width:100px;
+    width:100%;
     overflow: auto;
     height: 500px;
 }
@@ -68,7 +73,7 @@ body{
 }
 
 .settings-module{
-    margin:20px;
+    margin:20px 20px 20px 0;
     font-size: 14px;
     float: left;
 }
@@ -86,4 +91,18 @@ body{
 @keyframes spin {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background-color: #eaeaea;
+    border-left: 1px solid #ccc;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
 }
