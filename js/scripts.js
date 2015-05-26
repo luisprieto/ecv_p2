@@ -105,7 +105,7 @@ $(document).ready(function () {
      * @memberof ChessViewer
      */
     ChessViewer.prototype.showMovesList = function() {
-        $("#moves-list").append($("<li class='list-group-item' id='board-0'><a href='#'>Init</li>"));
+        $("#moves-list").html($("<li class='list-group-item' id='board-0'><a href='#'>Init</li>"));
         for (var i = 0; i < this.chess.history().length; i++) {
             var next = i+1;
             var history = this.chess.history({verbose:true})[i];
@@ -312,7 +312,7 @@ $(document).ready(function () {
         var header = this.chess.header();
         var year = header.Date.split(".")[0];
         this.title = header.White + " vs " + header.Black + " (" + year + ")";
-        $("#game-title").append(this.title);
+        $("#game-title").text(this.title);
         this.result = header.Result;
 
         this.startChess();
@@ -330,7 +330,6 @@ $(document).ready(function () {
         $.get(file, get_pgn.bind(this), 'text');
         $("#div-home").hide();
         $("#div-detail").show().addClass("show");
-        console.log("appendTo");
         $("#div-game-selection").appendTo("#detail-game-selection");
     }
 
