@@ -49,7 +49,7 @@ $(document).ready(function () {
         }
 
         $(this._select).find("> li").click(on_gameSelection.bind(this));
-        //$('body').on('click', '#moves-list li', on_listClick.bind(this));
+        $('body').on('click', '#moves-list li', on_listClick.bind(this));
 
         $('body')
             .on('click', '#btn-play',     on_btnPlayClick.bind(this))
@@ -177,7 +177,9 @@ $(document).ready(function () {
     };
 
     ChessViewer.prototype.setChess = function (turn) {
+        this.chess3d.clearBoard();
         this.currentTurn = turn;
+        this.markActiveMove();
         var board = this.bakedBoard[turn];
         for(var i in board) {
             if(i != "data" && board.hasOwnProperty(i)) {
@@ -192,6 +194,7 @@ $(document).ready(function () {
         if(this.currentTurn >= length) clearTimeout(this.timer);
         else {
             this.currentTurn++;
+            this.markActiveMove();
             var board = this.bakedBoard[this.currentTurn];
             var data = board.data;
             if (data.moves && data.from && data.to) {
@@ -214,7 +217,23 @@ $(document).ready(function () {
             }
 
             this.currentTurn--;
+            this.markActiveMove();
         }
+    };
+
+    ChessViewer.prototype.markActiveMove = function(){
+        var id = "#board-" + this.currentTurn;
+
+        $(".list-group-item").removeClass("active");
+
+        if(!$(id).hasClass("active"))
+            $(id).addClass("active");
+
+        if(this.currentTurn > 3){
+            var turn_top = this.currentTurn-3;
+            var id_top = "#board-" + turn_top;
+            $("#div-moves").scrollTop($(id_top).offset().top - $("#board-0").offset().top);
+        }       
     };
 
     /**
@@ -228,7 +247,8 @@ $(document).ready(function () {
         this.showMovesList();
         this.bakeChess();
         var header = this.chess.header();
-        this.title = header.Black + " vs " + header.White;
+        var year = header.Date.split(".")[0];
+        this.title = header.White + " vs " + header.Black + " (" + year + ")";
         $("#game-title").append(this.title);
 
         this.startChess();
@@ -254,13 +274,9 @@ $(document).ready(function () {
      */
     function on_listClick (event) {
         var t = event.currentTarget;
-        $(this._canvas).html("");
         var id = $(t).attr('id');
         id = id.split("-")[1];
-        var board = this.boards[id].split("\n");
-        for (var i = 0; i < board.length; i++) {
-            $(this._canvas).append(board[i]).append("<br>");
-        }
+        this.setChess(id);
     }
 
     function chess3d_ready () {
@@ -286,12 +302,22 @@ $(document).ready(function () {
     }
 
     function on_btnIncreaseSpeed () {
-        if(this.speed <= 5500) this.setSpeed(this.speed + 500);
+        if(this.speed <= 5500){
+            this.setSpeed(this.speed + 500);
+            $('#btn-incSpeed').prop('disabled', false);
+            $('#btn-decSpeed').prop('disabled', false);
+        }
+        else $('#btn-incSpeed').prop('disabled', true);
         console.log("speed: " + this.speed);
     }
 
     function on_btnDecreaseSpeed () {
-        if(this.speed >= 1500) this.setSpeed(this.speed - 500);
+        if(this.speed >= 1500){
+            this.setSpeed(this.speed - 500);
+            $('#btn-decSpeed').prop('disabled', false);
+            $('#btn-incSpeed').prop('disabled', false);
+        }
+        else $('#btn-decSpeed').prop('disabled', true);
         console.log("speed: " + this.speed);
     }
 
