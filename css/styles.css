@@ -24,10 +24,6 @@ body{
     display: table-cell !important;
 }
 
-#div-detail a{
-    color: #000 !important;
-}
-
 .detail-container{
     margin: 0 auto;
     width: 1000px;
@@ -77,6 +73,30 @@ body{
     margin:20px 20px 20px 0;
     font-size: 14px;
     float: left;
+}
+
+#board-0{
+    background-color: #000;
+}
+
+.list-group-item.b{
+    background-color: #480100;
+}
+
+.list-group-item.w{
+    background-color: #e8dba7;
+}
+
+.list-group-item.b a{
+    color: #e8dba7 !important;
+}
+ 
+.list-group-item.w a{
+     color: #480100 !important;
+}
+
+.list-group-item.active a{
+    color: #FFF !important;
 }
 
 .glyphicon-refresh-animate {

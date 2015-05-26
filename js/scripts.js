@@ -16,7 +16,6 @@ $(document).ready(function () {
         this.folder_games = "resources/";
         this.games_files = ["beliavsky_nunn_1985", "byrne_fischer_1956", "ivanchuk_yusupov_1991", "karpov_kasparov_1985", "rotlewi_rubinstein_1907"];
         this.title = '';
-        this.boards = [];
         this.bakedBoard = [];
         this.currentTurn = 0;
         this.speed = 1000;
@@ -96,14 +95,12 @@ $(document).ready(function () {
      * @memberof ChessViewer
      */
     ChessViewer.prototype.showMovesList = function() {
-        var new_chess = new Chess();
         $("#moves-list").append($("<li class='list-group-item' id='board-0'><a href='#'>Init</li>"));
         for (var i = 0; i < this.chess.history().length; i++) {
             var next = i+1;
-            $("#moves-list").append($("<li class='list-group-item' id='board-" + next + "'><a href='#'>" + this.chess.history()[i] + "</li>"));
-
-            new_chess.move(this.chess.history()[i]);
-            this.boards.push(new_chess.ascii());
+            var history = this.chess.history({verbose:true})[i];
+            var history_data = getPieceName(history.piece) + " [" + history.from + " > " + history.to + "]";
+            $("#moves-list").append($("<li class='list-group-item " + history.color + "' id='board-" + next + "'><a href='#'>" + history_data + "</li>"));
         }
     };
 
@@ -231,12 +228,37 @@ $(document).ready(function () {
         if(!$(id).hasClass("active"))
             $(id).addClass("active");
 
-        if(this.currentTurn > 3){
-            var turn_top = this.currentTurn-3;
+        if(this.currentTurn > 10){
+            var turn_top = this.currentTurn-10;
             var id_top = "#board-" + turn_top;
             $("#div-moves").scrollTop($(id_top).offset().top - $("#board-0").offset().top);
         }       
     };
+
+    function getPieceName(letter){
+        var name = '';
+        switch(letter){
+            case 'k':
+                name = "King";
+            break;
+            case 'q':
+                name = "Queen";
+            break;
+            case 'b':
+                name = "Bishop";
+            break;
+            case 'n':
+                name = "Knight";
+            break;
+            case 'r':
+                name = "Rook";
+            break;
+            case 'p':
+                name = "Pawn";
+            break;
+        }
+        return name;
+    }
 
     /**
      * @this ChessViewer
