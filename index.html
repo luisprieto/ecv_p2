@@ -48,36 +48,46 @@
 
 
     <div id="div-detail" class="site-wrapper-inner">
-        <div class="detail-container">
-            <div id="game-title"></div>
-            <div class="inner cover">
-                <div id="div-settings">
-                    Opciones
-                    <div class="settings-module">
-                        <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default" id="btn-previous"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-default" id="btn-play"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-default" id="btn-pause"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-default" id="btn-next"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>
-                        </div>
-                    </div>
-                    <div class="settings-module">
-                        Speed:
-                        <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default" id="btn-incSpeed"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-default" id="btn-decSpeed"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
-                        </div>
-                    </div>
-                </div>
-                <div id="canvas">
-
-                </div>
-                <div id="div-moves">
+   		<div class="row">
+   			<div class="col-lg-12 col-md-12">
+   				<div id="game-title"></div>
+   			</div>
+   		</div>
+   		<div class="row">
+   			<div class="col-lg-9 col-md-9">
+   				<div class="col-lg-12 col-md-12">
+   					<!--settings-->
+   					<div id="div-settings">
+	                    <div class="settings-module">
+	                        <div class="btn-group" role="group" aria-label="...">
+	                            <button type="button" class="btn btn-default" id="btn-previous"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>
+	                            <button type="button" class="btn btn-default" id="btn-play"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+	                            <button type="button" class="btn btn-default" id="btn-pause"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>
+	                            <button type="button" class="btn btn-default" id="btn-next"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>
+	                        </div>
+	                    </div>
+	                    <div class="settings-module">
+	                        Speed:
+	                        <div class="btn-group" role="group" aria-label="...">
+	                            <button type="button" class="btn btn-default" id="btn-incSpeed"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span></button>
+	                            <button type="button" class="btn btn-default" id="btn-decSpeed"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+	                        </div>
+	                    </div>
+	                </div>
+   				</div>
+   				<div class="col-lg-12 col-md-12">
+   					<!-- canvas -->
+   					<div id="canvas"></div>
+   				</div>
+   			</div>
+   			<div class="col-lg-3 col-md-3">
+   				<!-- list -->
+   				<div id="div-moves">
                     <ul id="moves-list" class="list-group">
                     </ul>
                 </div>
-            </div>
-        </div>
+   			</div>
+   		</div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

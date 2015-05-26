@@ -29,14 +29,15 @@ body{
 }
 
 #div-settings{
-    width: 200px;
     font-size: 20px;
+    width: 500px;
+    margin: 0 auto;
 }
 
 #canvas {
     width: 500px;
     height: 500px;
-    margin: 0 80px;
+    margin: 0 auto;
 }
 
 #div-moves{
@@ -67,8 +68,9 @@ body{
 }
 
 .settings-module{
-    margin:20px 0;
+    margin:20px;
     font-size: 14px;
+    float: left;
 }
 
 .glyphicon-refresh-animate {
