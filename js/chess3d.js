@@ -240,16 +240,16 @@
         light2.position.set(0,1000,-300);
         light1.target.position = new THREE.Object3D( 0, 0, 0 );
         light1.target.position = new THREE.Object3D( 0, 0, 0 );
-        light1.shadowMapWidth  = light2.shadowMapWidth = 1024;
-        light1.shadowMapHeight = light2.shadowMapHeight = 1024;
+
+        light1.shadowMapWidth  =  light2.shadowMapWidth = 1024;
+        light1.shadowMapHeight =  light2.shadowMapHeight = 1024;
 
         light1.shadowCameraNear = light2.shadowCameraNear = 1;
-        light1.shadowCameraFar = light2.shadowCameraFar = 5000;
-        light1.shadowCameraFov = light2.shadowCameraFov = 70;
+        light1.shadowCameraFar =  light2.shadowCameraFar = 5000;
+        light1.shadowCameraFov =  light2.shadowCameraFov = 70;
 
-        light1.castShadow = light2.castShadow = true;
+        light1.castShadow =     light2.castShadow = true;
         light1.shadowDarkness = light2.shadowDarkness = 0.3;
-        light1.shadowCameraVisible = light2.shadowCameraVisible = true;
 
         this.scene.add(light1);
         //this.scene.add(light2);
