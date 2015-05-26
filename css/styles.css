@@ -109,6 +109,11 @@ body{
     margin-top: 30px;
 }
 
+#detail-game-selection{
+    position: absolute;
+    top: 0;
+}
+
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
     -webkit-animation: spin2 .7s infinite linear;

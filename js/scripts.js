@@ -330,6 +330,8 @@ $(document).ready(function () {
         $.get(file, get_pgn.bind(this), 'text');
         $("#div-home").hide();
         $("#div-detail").show().addClass("show");
+        console.log("appendTo");
+        $("#div-game-selection").appendTo("#detail-game-selection");
     }
 
     /**
