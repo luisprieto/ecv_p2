@@ -8,3 +8,9 @@
 - Slider velocidad en vez de botones
 - Botones para centrar vista blanco/negro/cenital
 - Camara siguiendo piezas
+
+### P3
+- Subir partidas pgn
+- Anotar en movimientos
+- Posibilidad de jugar?
+- Chat global y por partida? -> Enviar partidas (enlace) en plan enlace.pgn:5 (turno 5)
