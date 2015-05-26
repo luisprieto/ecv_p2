@@ -189,13 +189,13 @@
      * @this Chess3d
      */
     Chess3d.prototype.createRenderer = function () {
-        this.renderer =  new THREE.WebGLRenderer();
+        this.renderer =  new THREE.WebGLRenderer({antialias: true, shadowMapEnabled: true});
         this.renderer.setClearColor(0x708B9B, 1.0);
         //console.log(this.container.offsetHeight, this.container.offsetHeight);
-        console.log(this.container);
         this.renderer.setSize(this.container.offsetHeight, this.container.offsetHeight);
         //this.renderer.setSize(500,500);
         this.renderer.shadowMapEnabled = true;
+        //this.renderer.antialias = true;
 
     };
 
@@ -229,13 +229,29 @@
      * @this Chess3d
      */
     Chess3d.prototype.createLights = function () {
-        var ambient_light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+        var ambient_light = new THREE.AmbientLight( 0xAAAAAA ); // soft white light
         this.scene.add( ambient_light );
 
         // create a light
-        var light = new THREE.PointLight(0xffffff);
-        light.position.set(0,250,0);
-        this.scene.add(light);
+        var light1 = new THREE.SpotLight(0xffffff);
+        var light2 = new THREE.SpotLight(0xffffff);
+        light1.position.set(0,1000,300);
+        light2.position.set(0,1000,-300);
+        light1.target.position = new THREE.Object3D( 0, 0, 0 );
+        light1.target.position = new THREE.Object3D( 0, 0, 0 );
+        light1.shadowMapWidth  = light2.shadowMapWidth = 1024;
+        light1.shadowMapHeight = light2.shadowMapHeight = 1024;
+
+        light1.shadowCameraNear = light2.shadowCameraNear = 1;
+        light1.shadowCameraFar = light2.shadowCameraFar = 5000;
+        light1.shadowCameraFov = light2.shadowCameraFov = 70;
+
+        light1.castShadow = light2.castShadow = true;
+        light1.shadowDarkness = light2.shadowDarkness = 0.3;
+        light1.shadowCameraVisible = light2.shadowCameraVisible = true;
+
+        this.scene.add(light1);
+        //this.scene.add(light2);
     };
 
     /**
@@ -267,9 +283,15 @@
         floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
 
         // DoubleSide: render texture on both sides of mesh
-        var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+        var floorMaterial = new THREE.MeshPhongMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+        floorMaterial.shininess = 2;
+
         var floorGeometry = new THREE.PlaneGeometry(1200, 1200, 1, 1);
         var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+
+        //floor.castShadow = true;
+        floor.receiveShadow = true;
+
         floor.position.y = -0.5;
         floor.rotation.x = Math.PI / 2;
         this.scene.add(floor);
@@ -416,7 +438,15 @@
         var pivot = new THREE.Object3D();
         object.position.y = offset;
         object.rotation.y += Math.PI*rotation;
-        object.castShadow = true;
+        //object.castShadow = true;
+        /*object.traverse(function(c) {
+            c.castShadow = true;
+            c.receiveShadow = true;
+        });*/
+        object.children.forEach(function(c) {
+            c.castShadow = true;
+            c.receiveShadow = true;
+        });
         pivot.add(object);
         pivot.name = id;
         this.objects[id] = pivot;
