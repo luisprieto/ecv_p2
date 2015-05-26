@@ -32,6 +32,7 @@ body{
 #div-settings{
     font-size: 20px;
     width: 237px;
+    height: 50px;
     margin: 0 auto;
 }
 
@@ -79,24 +80,33 @@ body{
     background-color: #000;
 }
 
-.list-group-item.b{
+.list-group-item.b,.label-black{
     background-color: #480100;
 }
 
-.list-group-item.w{
+.list-group-item.w,.label-white{
     background-color: #e8dba7;
 }
 
-.list-group-item.b a{
+.list-group-item.b a,.label-black{
     color: #e8dba7 !important;
 }
  
-.list-group-item.w a{
+.list-group-item.w a,.label-white{
      color: #480100 !important;
 }
 
 .list-group-item.active a{
     color: #FFF !important;
+}
+
+#result{
+    height: 60px;
+    padding: 10px 0;
+    font-size: 20px;
+    width:100%;
+    text-align: center;
+    margin-top: 30px;
 }
 
 .glyphicon-refresh-animate {
