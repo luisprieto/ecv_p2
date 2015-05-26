@@ -228,8 +228,8 @@
             45,
             this.container.offsetWidth/this.container.offsetHeight,
             0.1, 10000);
-        this.camera.position.x = 500;
-        this.camera.position.y = 1000;
+        this.camera.position.x = 850;
+        this.camera.position.y = 1100;
         this.camera.position.z = 0;
         this.camera.lookAt(this.scene.position);
 
