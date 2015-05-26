@@ -20,6 +20,7 @@ $(document).ready(function () {
         this.currentTurn = 0;
         this.speed = 1000;
         this.timer = null;
+        this.result = '';
 
         this.chess = undefined;
 
@@ -237,11 +238,40 @@ $(document).ready(function () {
         if(!$(id).hasClass("active"))
             $(id).addClass("active");
 
-        if(this.currentTurn > 10){
-            var turn_top = this.currentTurn-10;
+        if(this.currentTurn > 3){
+            var turn_top = this.currentTurn-3;
             var id_top = "#board-" + turn_top;
             $("#div-moves").scrollTop($(id_top).offset().top - $("#board-0").offset().top);
-        }       
+        } 
+ 
+        if(this.currentTurn == this.chess.history().length) 
+            {
+                var winner = '';
+                var label_result = '';
+                switch(this.result){
+                    case '1-0':
+                        winner = 'White wins';
+                        label_result = 'label-white';
+                    break;
+
+                    case '0-1':
+                        winner = 'Black wins';
+                        label_result = 'label-black';
+                    break;
+
+                    case '1/2-1/2':
+                        winner = 'Draw';
+                        label_result = 'label-default';
+                    break;
+
+                    case '*':
+                        winner = 'Other';
+                        label_result = 'label-default';
+                    break;
+                }
+                $("#result").html("<button class='btn btn-lg " + label_result + "' type='button'>" + winner + "</button>");
+            }
+        else  $("#result").html("");      
     };
 
     function getPieceName(letter){
@@ -283,6 +313,7 @@ $(document).ready(function () {
         var year = header.Date.split(".")[0];
         this.title = header.White + " vs " + header.Black + " (" + year + ")";
         $("#game-title").append(this.title);
+        this.result = header.Result;
 
         this.startChess();
     }
@@ -299,6 +330,8 @@ $(document).ready(function () {
         $.get(file, get_pgn.bind(this), 'text');
         $("#div-home").hide();
         $("#div-detail").show().addClass("show");
+        console.log("appendTo");
+        $("#div-game-selection").appendTo("#detail-game-selection");
     }
 
     /**

@@ -23,7 +23,7 @@
                 <p class="lead">Here you can visualize some of the best chess games ever.</p>
                 <p class="lead">
                     <!-- Single button -->
-                <div class="btn-group">
+                <div class="btn-group" id="div-game-selection">
                     <button type="button" id="btn-dropdown" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="display: none;">
                         Select a chess game<span class="caret"></span>
                     </button>
@@ -46,6 +46,7 @@
 
 
     <div id="div-detail" class="site-wrapper-inner">
+      <div id="detail-game-selection"></div>
    		<div class="row">
    			<div class="col-lg-12 col-md-12">
    				<div id="game-title"></div>
@@ -75,6 +76,8 @@
    				<div class="col-lg-12 col-md-12">
    					<!-- canvas -->
    					<div id="canvas"></div>
+            <div id="result">
+            </div>
    				</div>
    			</div>
    			<div class="col-lg-3 col-md-3">
