@@ -16,3 +16,26 @@
   - Posibilidad de votarlos (los usuarios lo hacen relevante o no)
 - Full screen que muestra subtitulos con comentarios relevantes y hace zoom-in en movimientos
 - barra de reproduccion (slider o algo así)
+- Drag & Drop partidas pgn
+
+
+{
+	name_game: {
+		file: http://...../name_Game.pgn,
+		turns: [
+			{
+				author: string,
+				comment: string,
+				votes: int
+			}
+		]
+	}
+}
+
+getGameList: devuelve lista de name_games
+getGame: devuelve file y turns
+sendComment
+voteComment
+
+
+LOCALSTORAGE
