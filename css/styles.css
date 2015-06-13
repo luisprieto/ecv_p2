@@ -24,10 +24,6 @@ body{
     display: table-cell !important;
 }
 
-#div-detail a{
-    color: #000 !important;
-}
-
 .detail-container{
     margin: 0 auto;
     width: 1000px;
@@ -36,6 +32,7 @@ body{
 #div-settings{
     font-size: 20px;
     width: 237px;
+    height: 50px;
     margin: 0 auto;
 }
 
@@ -77,6 +74,44 @@ body{
     margin:20px 20px 20px 0;
     font-size: 14px;
     float: left;
+}
+
+#board-0{
+    background-color: #000;
+}
+
+.list-group-item.b,.label-black{
+    background-color: #480100;
+}
+
+.list-group-item.w,.label-white{
+    background-color: #e8dba7;
+}
+
+.list-group-item.b a,.label-black{
+    color: #e8dba7 !important;
+}
+ 
+.list-group-item.w a,.label-white{
+     color: #480100 !important;
+}
+
+.list-group-item.active a{
+    color: #FFF !important;
+}
+
+#result{
+    height: 60px;
+    padding: 10px 0;
+    font-size: 20px;
+    width:100%;
+    text-align: center;
+    margin-top: 30px;
+}
+
+#detail-game-selection{
+    margin-top:30px;
+    margin-bottom: 30px;
 }
 
 .glyphicon-refresh-animate {

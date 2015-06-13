@@ -17,11 +17,11 @@ $(document).ready(function () {
         this.folder_games = "resources/";
         this.games_files = ["beliavsky_nunn_1985", "byrne_fischer_1956", "ivanchuk_yusupov_1991", "karpov_kasparov_1985", "rotlewi_rubinstein_1907"];
         this.title = '';
-        this.boards = [];
         this.bakedBoard = [];
         this.currentTurn = 0;
         this.speed = 1000;
         this.timer = null;
+        this.result = '';
 
         this.chess = undefined;
 
@@ -51,7 +51,9 @@ $(document).ready(function () {
         }
 
         $(this._select).find("> li").click(on_gameSelection.bind(this));
-        $('body').on('click', '#moves-list li', on_listClick.bind(this))
+        $('body').on('click', '#moves-list li', on_listClick.bind(this));
+
+        $('body')
             .on('click', '#btn-play',     on_btnPlayClick.bind(this))
             .on('click', '#btn-pause',    on_btnPauseClick.bind(this))
             .on('click', '#btn-incSpeed', on_btnIncreaseSpeed.bind(this))
@@ -75,6 +77,17 @@ $(document).ready(function () {
         this.setChess(0);
         //this.resumeChess();
 
+    };
+
+    ChessViewer.prototype.reset = function () {
+        this.pauseChess();
+        this.title = '';
+        this.bakedBoard = [];
+        this.currentTurn = 0;
+        this.setSpeed(1000);
+        this.chess3d.clearBoard();
+        $('#btn-play').show();
+        $('#btn-pause').hide();
     };
 
     /**
@@ -118,12 +131,12 @@ $(document).ready(function () {
      * @memberof ChessViewer
      */
     ChessViewer.prototype.showMovesList = function() {
-        var new_chess = new Chess();
+        $("#moves-list").html($("<li class='list-group-item' id='board-0'><a href='#'>Init</li>"));
         for (var i = 0; i < this.chess.history().length; i++) {
-            $("#moves-list").append($("<li class='list-group-item' id='board-" + i + "'><a href='#'>" + this.chess.history()[i] + "</li>"));
-
-            new_chess.move(this.chess.history()[i]);
-            this.boards.push(new_chess.ascii());
+            var next = i+1;
+            var history = this.chess.history({verbose:true})[i];
+            var history_data = getPieceName(history.piece) + " [" + history.from + " > " + history.to + "]";
+            $("#moves-list").append($("<li class='list-group-item " + history.color + "' id='board-" + next + "'><a href='#'>" + history_data + "</li>"));
         }
     };
 
@@ -275,8 +288,62 @@ $(document).ready(function () {
             var turn_top = this.currentTurn-3;
             var id_top = "#board-" + turn_top;
             $("#div-moves").scrollTop($(id_top).offset().top - $("#board-0").offset().top);
-        }       
+        } 
+ 
+        if(this.currentTurn == this.chess.history().length) 
+            {
+                var winner = '';
+                var label_result = '';
+                switch(this.result){
+                    case '1-0':
+                        winner = 'White wins';
+                        label_result = 'label-white';
+                    break;
+
+                    case '0-1':
+                        winner = 'Black wins';
+                        label_result = 'label-black';
+                    break;
+
+                    case '1/2-1/2':
+                        winner = 'Draw';
+                        label_result = 'label-default';
+                    break;
+
+                    case '*':
+                        winner = 'Other';
+                        label_result = 'label-default';
+                    break;
+                }
+                $("#result").html("<button class='btn btn-lg " + label_result + "' type='button'>" + winner + "</button>");
+            }
+        else  $("#result").html("");      
     };
+
+    function getPieceName(letter){
+        var name = '';
+        switch(letter){
+            case 'k':
+                name = "King";
+            break;
+            case 'q':
+                name = "Queen";
+            break;
+            case 'b':
+                name = "Bishop";
+            break;
+            case 'n':
+                name = "Knight";
+            break;
+            case 'r':
+                name = "Rook";
+            break;
+            case 'p':
+                name = "Pawn";
+            break;
+        }
+        return name;
+    }
 
     /**
      * Carga un fichero pgn.
@@ -292,7 +359,8 @@ $(document).ready(function () {
         var header = this.chess.header();
         var year = header.Date.split(".")[0];
         this.title = header.White + " vs " + header.Black + " (" + year + ")";
-        $("#game-title").append(this.title);
+        $("#game-title").text(this.title);
+        this.result = header.Result;
 
         this.startChess();
     }
@@ -304,11 +372,13 @@ $(document).ready(function () {
      * @param event
      */
     function on_gameSelection(event) {
+        this.reset();
         var t = event.currentTarget;
         var file = this.folder_games + $(t).attr('id') + ".pgn";
         $.get(file, get_pgn.bind(this), 'text');
         $("#div-home").hide();
         $("#div-detail").show().addClass("show");
+        $("#div-game-selection").appendTo("#detail-game-selection");
     }
 
     /**
