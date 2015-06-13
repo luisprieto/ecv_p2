@@ -8,6 +8,7 @@ $(document).ready(function () {
 
     /**
      * @class
+     * @classdesc Mediante esta clase podremos controlar el flujo de una partida de ajedrez leída de un fichero pgn y mostrarla en un entorno 3D.
      * @this ChessViewer
      * @global
      * @return ChessViewer
@@ -32,6 +33,7 @@ $(document).ready(function () {
     _global.ChessViewer = ChessViewer;
 
     /**
+     * Inicia el visor
      * @this ChessViewer
      * @memberof ChessViewer
      */
@@ -49,9 +51,7 @@ $(document).ready(function () {
         }
 
         $(this._select).find("> li").click(on_gameSelection.bind(this));
-        $('body').on('click', '#moves-list li', on_listClick.bind(this));
-
-        $('body')
+        $('body').on('click', '#moves-list li', on_listClick.bind(this))
             .on('click', '#btn-play',     on_btnPlayClick.bind(this))
             .on('click', '#btn-pause',    on_btnPauseClick.bind(this))
             .on('click', '#btn-incSpeed', on_btnIncreaseSpeed.bind(this))
@@ -65,6 +65,11 @@ $(document).ready(function () {
         this.chess3d.init();
     };
 
+    /**
+     * Inicia el entorno 3D y el tablero en el turno 0 (estado inicial)
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.startChess = function () {
         this.chess3d.start();
         this.setChess(0);
@@ -72,16 +77,32 @@ $(document).ready(function () {
 
     };
 
+    /**
+     * Reaunuda la reproducción de la partida.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.resumeChess = function () {
         this.pauseChess();
         this.timer = setInterval(this.nextMove.bind(this), this.speed);
     };
 
+    /**
+     * Pausa la reproducción de la partida.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.pauseChess = function () {
         if(this.timer != null) clearInterval(this.timer);
         this.timer = null;
     };
 
+    /**
+     * Configura la velocidad de reproducción.
+     * @param {number} speed - Nueva velocidad en ms, que es el tiempo dedicado a cada turno.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.setSpeed = function (speed) {
         this.speed = speed;
         this.chess3d.speed_anim = this.speed - 300;
@@ -92,6 +113,7 @@ $(document).ready(function () {
     };
 
     /**
+     * Rellena la lista de turnos
      * @this ChessViewer
      * @memberof ChessViewer
      */
@@ -106,6 +128,7 @@ $(document).ready(function () {
     };
 
     /**
+     * A partir de la información de la partida, crea el estado completo de cada turno a lo largo de la partida, de forma que tenemos tableros completos, y no incrementales.
      * @this ChessViewer
      * @memberof ChessViewer
      */
@@ -176,6 +199,10 @@ $(document).ready(function () {
         }
     };
 
+    /**
+     * Coloca el tablero en el estado de un determinado turno.
+     * @param {number} turn - turno a colocar.
+     */
     ChessViewer.prototype.setChess = function (turn) {
         this.chess3d.clearBoard();
         this.currentTurn = turn;
@@ -189,6 +216,11 @@ $(document).ready(function () {
         }
     };
 
+    /**
+     * Coloca el tablero en el siguiente turno al actual.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.nextMove = function () {
         var length = this.bakedBoard.length - 1;
         if(this.currentTurn >= length) clearTimeout(this.timer);
@@ -205,6 +237,11 @@ $(document).ready(function () {
         }
     };
 
+    /**
+     * Coloca el tablero en el anterior turno al actual
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.previousMove = function () {
         console.log("turn: " + this.currentTurn);
         if(this.currentTurn > 0) {
@@ -221,6 +258,11 @@ $(document).ready(function () {
         }
     };
 
+    /**
+     * Señala en la lista de movimientos el turno actual
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     ChessViewer.prototype.markActiveMove = function(){
         var id = "#board-" + this.currentTurn;
 
@@ -237,6 +279,7 @@ $(document).ready(function () {
     };
 
     /**
+     * Carga un fichero pgn.
      * @this ChessViewer
      * @memberof ChessViewer
      * @param data
@@ -255,6 +298,7 @@ $(document).ready(function () {
     }
 
     /**
+     * Cambia la pantalla de elección de partida al visor tras elegir una partida.
      * @this ChessViewer
      * @memberof ChessViewer
      * @param event
@@ -268,6 +312,7 @@ $(document).ready(function () {
     }
 
     /**
+     * Coloca el tablero al turno correspondiente al elemento de la lista al que se ha hecho clic.
      * @this ChessViewer
      * @memberof ChessViewer
      * @param event
@@ -279,12 +324,22 @@ $(document).ready(function () {
         this.setChess(id);
     }
 
+    /**
+     * Función llamada cuando se ha terminado de cargar los assets. Permite elegir juegos.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function chess3d_ready () {
         $("#btn-loading").fadeOut();
         $("#btn-dropdown").delay(400).fadeIn();
         //this.startChess();
     }
 
+    /**
+     * Cuando se hace clic en el botón de play, cambia a botón de pausa. Inicia la reproducción de la partida.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function on_btnPlayClick () {
         $('#btn-play').hide();
         $('#btn-pause').show();
@@ -293,6 +348,11 @@ $(document).ready(function () {
         this.resumeChess();
     }
 
+    /**
+     * Cuando se hace clic en el botón de pausa, cambia al botón de play. Pausa la partida.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function on_btnPauseClick () {
         $('#btn-play').show();
         $('#btn-pause').hide();
@@ -301,6 +361,11 @@ $(document).ready(function () {
         this.pauseChess();
     }
 
+    /**
+     * Aumenta la velocidad de la partida al hacer clic en el botón
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function on_btnIncreaseSpeed () {
         if(this.speed <= 5500){
             this.setSpeed(this.speed + 500);
@@ -311,6 +376,11 @@ $(document).ready(function () {
         console.log("speed: " + this.speed);
     }
 
+    /**
+     * Disminuye la velocidad de la partida al hacer clic en el botón
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function on_btnDecreaseSpeed () {
         if(this.speed >= 1500){
             this.setSpeed(this.speed - 500);
@@ -321,10 +391,20 @@ $(document).ready(function () {
         console.log("speed: " + this.speed);
     }
 
+    /**
+     * Al hacer clic en el botón, va al turno anterior.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function on_btnPrevious () {
         this.previousMove();
     }
 
+    /**
+     * Al hacer clic en el botón, va al turno siguiente.
+     * @this ChessViewer
+     * @memberof ChessViewer
+     */
     function on_btnNext () {
         this.nextMove();
     }

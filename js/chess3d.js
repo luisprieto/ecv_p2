@@ -5,6 +5,7 @@
      * @class
      * @classdesc Clase que representa un tablero de ajedrez en 3D. Provee de los métodos necesarios para mover las piezas por el tablero.
      * @param {Element} container - Contenedor del canvas
+     * @global
      * @this Chess3d
      * @returns Chess3d
      */
