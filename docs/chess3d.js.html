@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>chess3d.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Chess3d.html">Chess3d</a><ul class='methods'><li data-type='method'><a href="Chess3d.html#.render">render</a></li><li data-type='method'><a href="Chess3d.html#clearBoard">clearBoard</a></li><li data-type='method'><a href="Chess3d.html#createBishops">createBishops</a></li><li data-type='method'><a href="Chess3d.html#createBoard">createBoard</a></li><li data-type='method'><a href="Chess3d.html#createCamera">createCamera</a></li><li data-type='method'><a href="Chess3d.html#createChess">createChess</a></li><li data-type='method'><a href="Chess3d.html#createKings">createKings</a></li><li data-type='method'><a href="Chess3d.html#createKnights">createKnights</a></li><li data-type='method'><a href="Chess3d.html#createLights">createLights</a></li><li data-type='method'><a href="Chess3d.html#createPawns">createPawns</a></li><li data-type='method'><a href="Chess3d.html#createQueens">createQueens</a></li><li data-type='method'><a href="Chess3d.html#createRenderer">createRenderer</a></li><li data-type='method'><a href="Chess3d.html#createRooks">createRooks</a></li><li data-type='method'><a href="Chess3d.html#createScene">createScene</a></li><li data-type='method'><a href="Chess3d.html#getBoardCoord">getBoardCoord</a></li><li data-type='method'><a href="Chess3d.html#init">init</a></li><li data-type='method'><a href="Chess3d.html#loadModel">loadModel</a></li><li data-type='method'><a href="Chess3d.html#movePiece">movePiece</a></li><li data-type='method'><a href="Chess3d.html#resizeCanvas">resizeCanvas</a></li><li data-type='method'><a href="Chess3d.html#setPiece">setPiece</a></li><li data-type='method'><a href="Chess3d.html#start">start</a></li></ul></li><li><a href="ChessViewer.html">ChessViewer</a><ul class='methods'><li data-type='method'><a href="ChessViewer.html#.chess3d_ready">chess3d_ready</a></li><li data-type='method'><a href="ChessViewer.html#.get_pgn">get_pgn</a></li><li data-type='method'><a href="ChessViewer.html#.on_btnDecreaseSpeed">on_btnDecreaseSpeed</a></li><li data-type='method'><a href="ChessViewer.html#.on_btnIncreaseSpeed">on_btnIncreaseSpeed</a></li><li data-type='method'><a href="ChessViewer.html#.on_btnNext">on_btnNext</a></li><li data-type='method'><a href="ChessViewer.html#.on_btnPauseClick">on_btnPauseClick</a></li><li data-type='method'><a href="ChessViewer.html#.on_btnPlayClick">on_btnPlayClick</a></li><li data-type='method'><a href="ChessViewer.html#.on_btnPrevious">on_btnPrevious</a></li><li data-type='method'><a href="ChessViewer.html#.on_gameSelection">on_gameSelection</a></li><li data-type='method'><a href="ChessViewer.html#.on_listClick">on_listClick</a></li><li data-type='method'><a href="ChessViewer.html#bakeChess">bakeChess</a></li><li data-type='method'><a href="ChessViewer.html#init">init</a></li><li data-type='method'><a href="ChessViewer.html#markActiveMove">markActiveMove</a></li><li data-type='method'><a href="ChessViewer.html#nextMove">nextMove</a></li><li data-type='method'><a href="ChessViewer.html#pauseChess">pauseChess</a></li><li data-type='method'><a href="ChessViewer.html#previousMove">previousMove</a></li><li data-type='method'><a href="ChessViewer.html#resumeChess">resumeChess</a></li><li data-type='method'><a href="ChessViewer.html#setSpeed">setSpeed</a></li><li data-type='method'><a href="ChessViewer.html#showMovesList">showMovesList</a></li><li data-type='method'><a href="ChessViewer.html#startChess">startChess</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">chess3d.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>(function(_global) {
+    "use strict";
+
+    /**
+     * @class
+     * @classdesc Clase que representa un tablero de ajedrez en 3D. Provee de los métodos necesarios para mover las piezas por el tablero.
+     * @param {Element} container - Contenedor del canvas
+     * @global
+     * @this Chess3d
+     * @returns Chess3d
+     */
+    function Chess3d (container) {
+        this.renderer = undefined;
+        this.scene = undefined;
+        this.camera = undefined;
+        this.controls = undefined;
+        this.container = container;
+        this.render = render.bind(this);
+        this.objects = {};
+        this.loadedObjects = 0;
+        //this.speed_anim = 700;
+        this.square_size = 134;
+
+        this.on_ready = undefined;
+
+    }
+
+    _global.Chess3d = Chess3d;
+
+    /**
+     * Crea la escena 3D
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.init = function () {
+        this.loader = new THREE.OBJMTLLoader();
+        this.createRenderer();
+        this.createScene();
+        this.createCamera();
+        this.createLights();
+        this.createChess();
+        window.addEventListener("resize", this.resizeCanvas.bind(this), false);
+    };
+
+    /**
+     * Adapta el canvas a su contenedor
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.resizeCanvas = function () {
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+        //this.camera.aspect = this.container.offsetWidth/this.container.offsetHeight;
+        this.createCamera();
+    };
+
+    /**
+     * Añade el canvas a container e inicia el bucle de renderizado
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.start = function () {
+        this.container.appendChild(this.renderer.domElement);
+        this.resizeCanvas();
+        this.render();
+    };
+
+    /**
+     * Devuelve las coordenadas de una determinada casilla del ajedrez
+     * @param {string} coord - Coordenada de ajedrez
+     * @returns {{x: number, z: number}} - Coordenadas x,z
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.getBoardCoord = function(coord){
+        var square_size = this.square_size;
+        var posx;
+        var posz;
+        var l = coord[0];
+        var n = coord[1];
+        switch(l)
+        {
+            case 'a':
+                posz = square_size*3.5;
+            break;
+            case 'b':
+                posz = square_size*2.5;
+            break;
+            case 'c':
+                posz = square_size*1.5;
+            break;
+            case 'd':
+                posz = square_size*0.5;
+            break;
+            case 'e':
+                posz = square_size*-0.5;
+            break;
+            case 'f':
+                posz = square_size*-1.5;
+            break;
+            case 'g':
+                posz = square_size*-2.5;
+            break;
+            case 'h':
+                posz = square_size*-3.5;
+            break;
+        }
+        switch(n)
+        {
+            case '1':
+                posx = square_size*3.5;
+            break;
+            case '2':
+                posx = square_size*2.5;
+            break;
+            case '3':
+                posx = square_size*1.5;
+            break;
+            case '4':
+                posx = square_size*0.5;
+            break;
+            case '5':
+                posx = square_size*-0.5;
+            break;
+            case '6':
+                posx = square_size*-1.5;
+            break;
+            case '7':
+                posx = square_size*-2.5;
+            break;
+            case '8':
+                posx = square_size*-3.5;
+            break;
+        }
+
+        return {x: posx, z: posz};
+    };
+
+    /**
+     * Mueve una pieza a from a to.
+     * @param {string} id - ID de la pieza.
+     * @param {string} from - Coordenada de ajedrez de origen.
+     * @param {string} to - Coordenada de ajedrez de destino.
+     * @param {string} [captured] - En caso de que se haya capturado una pieza, su ID.
+     * @param {boolean} show - Hace la pieza visible, necesario cuando se va hacia atrás por si la pieza había sido capturada.
+     * @param {number} speed - tiempo en ms que tardará en moverse la pieza de su origen al destino.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.movePiece = function(id, from, to, captured, show, speed)
+    {
+        speed = speed || 700;
+        var object = this.objects[id];
+        var board_coord = this.getBoardCoord(to);
+        var board_coord_from = this.getBoardCoord(from);
+
+        var position = {x: object.position.x, z: object.position.z};
+        var target = {x: board_coord.x, z: board_coord.z};
+        var tween = new TWEEN.Tween(position).to(target, speed);
+        tween.onUpdate(function() {
+            object.position.x = this.x;
+            object.position.z = this.z;
+        });
+
+        var c_tween = undefined;
+        if(captured) {
+            var piece = this.objects[captured];
+
+            var c_position;
+            var c_target;
+            if(!show) {
+                c_position = {angle: 0};
+                c_target = {angle: Math.PI / 2};
+                //piece.position.x = board_coord.x;
+                //piece.position.z = board_coord.z;
+            }
+            else {
+                c_position = {angle: Math.PI / 2};
+                c_target = {angle: 0};
+                piece.position.x = board_coord_from.x;
+                piece.position.z = board_coord_from.z;
+                piece.visible = !!show;
+            }
+            c_tween = new TWEEN.Tween(c_position).to(c_target, 500);
+            c_tween.onUpdate(function() {
+                piece.rotation.x = this.angle;
+            });
+            c_tween.onComplete(function() {
+                piece.visible = !!show;
+            });
+            //if(!show) this.scene.remove(piece);
+
+        }
+        tween.start();
+        if(c_tween) c_tween.delay(speed - 500).start();
+
+    };
+
+    /**
+     * Pone la pieza con ID id en la coordenada coord.
+     * @param {string} id - ID de la pieza a colocar.
+     * @param {string} coord - Coordenada de ajedrez de destino.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.setPiece = function(id, coord)
+    {
+        var object = this.objects[id];
+        object.visible = true;
+        var board_coord = this.getBoardCoord(coord);
+        
+        object.position.x = board_coord.x;
+        object.position.z = board_coord.z;
+
+        this.scene.add(object);
+    };
+
+    /**
+     * Vuelve todas las piezas invisibles.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.clearBoard = function(){
+        for(var i in this.objects){
+            if(i != "board" &amp;&amp; this.objects.hasOwnProperty(i)){
+                var piece = this.objects[i];
+                piece.visible = false;
+            }
+        }
+    };
+
+    /**
+     * Crea un renderer de Three.js
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createRenderer = function () {
+        this.renderer =  new THREE.WebGLRenderer();
+        this.renderer.setClearColor(0x708B9B, 1.0);
+        //console.log(this.container.offsetHeight, this.container.offsetHeight);
+        console.log(this.container);
+        this.renderer.setSize(this.container.offsetHeight, this.container.offsetHeight);
+        //this.renderer.setSize(500,500);
+        this.renderer.shadowMapEnabled = true;
+
+    };
+
+    /**
+     * Crea una scene de Three.js
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createScene = function () {
+        this.scene = new THREE.Scene();
+    };
+
+    /**
+     * Crea una cámara que mira al centro de la escena
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createCamera = function () {
+        this.camera = new THREE.PerspectiveCamera(
+            45,
+            this.container.offsetWidth/this.container.offsetHeight,
+            0.1, 10000);
+        this.camera.position.x = 500;
+        this.camera.position.y = 1000;
+        this.camera.position.z = 0;
+        this.camera.lookAt(this.scene.position);
+
+        this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+    };
+
+    /**
+     * Crea las luces de la escena
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createLights = function () {
+        var ambient_light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+        this.scene.add( ambient_light );
+
+        // create a light
+        var light = new THREE.PointLight(0xffffff);
+        light.position.set(0,250,0);
+        this.scene.add(light);
+    };
+
+    /**
+     * Crea las figuras de lajedrez
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createChess = function () {
+        //this._white_material = new THREE.MeshBasicMaterial({color: 0xEEEEEE});
+        //this._black_material = new THREE.MeshBasicMaterial({color: 0x111111});
+
+        this.createBoard();
+        this.createPawns();
+        this.createRooks();
+        this.createKnights();
+        this.createBishops();
+        this.createQueens();
+        this.createKings();
+
+    };
+
+    /**
+     * Crea el tablero de ajedrez y lo añade a la escena.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createBoard = function () {
+        ///////////
+        // FLOOR //
+        ///////////
+
+        // note: 4x4 checkboard pattern scaled so that each square is 25 by 25 pixels.
+        var floorTexture = new THREE.ImageUtils.loadTexture( 'resources/chessboard.jpg' );
+        floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+
+        // DoubleSide: render texture on both sides of mesh
+        var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+        var floorGeometry = new THREE.PlaneGeometry(1200, 1200, 1, 1);
+        var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.position.y = -0.5;
+        floor.rotation.x = Math.PI / 2;
+        this.scene.add(floor);
+        floor.name = "board";
+        this.objects["board"] = floor;
+    };
+
+    /**
+     * Crea los peones y los añade a la escena.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createPawns = function () {
+        for(var i = 1; i &lt;= 8; ++i) {
+            this.loadModel(
+                'resources/models/pawn_1.obj',
+                'resources/models/pawn_1.mtl',
+                "white_pawn" + i,
+                55,
+                1
+            );
+            this.loadModel(
+                'resources/models/pawn_2.obj',
+                'resources/models/pawn_2.mtl',
+                "black_pawn" + i,
+                55,
+                1
+            );
+        }
+    };
+
+    /**
+     * Crea las torres y las añade a la escena.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createRooks = function () {
+        for(var i = 1; i &lt;= 2; ++i) {
+            this.loadModel(
+                'resources/models/rook_1.obj',
+                'resources/models/rook_1.mtl',
+                "white_rook" + i,
+                65,
+                1
+            );
+            this.loadModel(
+                'resources/models/rook_2.obj',
+                'resources/models/rook_2.mtl',
+                "black_rook" + i,
+                65,
+                1
+            );
+        }
+    };
+
+    /**
+     * Crea los caballeros y los añade a la escena.
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createKnights = function () {
+        for(var i = 1; i &lt;= 2; ++i) {
+            this.loadModel(
+                'resources/models/knight_1.obj',
+                'resources/models/knight_1.mtl',
+                "white_knight" + i,
+                85,
+                3/2
+            );
+            this.loadModel(
+                'resources/models/knight_2.obj',
+                'resources/models/knight_2.mtl',
+                "black_knight" + i,
+                85,
+                5/2
+            );
+        }
+    };
+
+    /**
+     * Crea los alfiles y los añade a la escena
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createBishops = function () {
+        for(var i = 1; i &lt;= 2; ++i) {
+            this.loadModel(
+                'resources/models/bishop_1.obj',
+                'resources/models/bishop_1.mtl',
+                "white_bishop" + i,
+                90,
+                1
+            );
+            this.loadModel(
+                'resources/models/bishop_2.obj',
+                'resources/models/bishop_2.mtl',
+                "black_bishop" + i,
+                90,
+                1
+            );
+        }
+    };
+
+    /**
+     * Crea las reinas y las añade a la escena
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createQueens = function () {
+        this.loadModel(
+            'resources/models/queen_1.obj',
+            'resources/models/queen_1.mtl',
+            "white_queen",
+            108,
+            1
+        );
+        this.loadModel(
+            'resources/models/queen_2.obj',
+            'resources/models/queen_2.mtl',
+            "black_queen",
+            108,
+            1
+        );
+    };
+
+    /**
+     * Crea los reyes y los añade a la escena
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.createKings = function () {
+        this.loadModel(
+            'resources/models/king_1.obj',
+            'resources/models/king_1.mtl',
+            "white_king",
+            124,
+            1
+        );
+        this.loadModel(
+            'resources/models/king_2.obj',
+            'resources/models/king_2.mtl',
+            "black_king",
+            124,
+            1
+        );
+    };
+
+    /**
+     * Carga un modelo obj y una textura mtl.
+     * @param {string} obj - url del obj
+     * @param {string} mtl - url del mtl
+     * @param {string} id - ID que tendrá el modelo
+     * @param {number} offset - Offset de las coordenadas y
+     * @param {number} rotation - Offset de la rotación
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    Chess3d.prototype.loadModel = function(obj, mtl, id, offset, rotation) {
+        this.loader.load(
+            // OBJ resource URL
+            obj,
+            // MTL resource URL
+            mtl,
+            // Function when both resources are loaded
+            loadModelCallback.bind(this, id, offset, rotation)
+        );
+    };
+
+    /**
+     * Renderiza la escena
+     * @memberof Chess3d
+     * @this Chess3d
+     */
+    function render (time) {
+        this.controls.update();
+        this.renderer.render(this.scene, this.camera);
+
+        requestAnimationFrame(this.render);
+        TWEEN.update(time);
+    }
+
+    /**
+     * Callback para cuando termina de cargar un obj y mtl
+     * @param {string} id - ID que tendrá el objeto
+     * @param {number} offset - Offset de las coordenadas y
+     * @param {number} rotation - Offset de la rotación
+     * @param object - Nodo de Three.js
+     */
+    function loadModelCallback(id, offset, rotation, object) {
+        var pivot = new THREE.Object3D();
+        object.position.y = offset;
+        object.rotation.y += Math.PI*rotation;
+        object.castShadow = true;
+        pivot.add(object);
+        pivot.name = id;
+        this.objects[id] = pivot;
+
+        //object.position.y = offset;
+        //object.translateY(offset);
+        //object.rotation.y += Math.PI*rotation;
+        //object.name = id;
+        //this.objects[id] = object;
+
+        this.loadedObjects++;
+        if (this.loadedObjects >= 32 &amp;&amp; this.on_ready) this.on_ready();
+    }
+
+
+})(window);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.1</a> on Sat Jun 13 2015 16:59:57 GMT+0200 (Hora de verano romance) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
