@@ -1,0 +1,26 @@
+{
+  "name": "ChessViewer",
+  "version": "1.0.0",
+  "description": "Chess pgn viewer in 3D\r =============",
+  "main": "js/code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luisprieto/ecv_p2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcnavarro/ecv_p1/issues"
+  },
+  "homepage": "https://github.com/luisprieto/ecv_p2.git",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-jsdoc": "^0.5.8",
+    "jsdoc": "^3.3.0-beta3",
+    "minami": "^1.1.0"
+  }
+}
