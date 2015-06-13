@@ -297,8 +297,8 @@
         var light2 = new THREE.SpotLight(0xffffff);
         light1.position.set(0,1000,300);
         light2.position.set(0,1000,-300);
-        light1.target.position = new THREE.Object3D( 0, 0, 0 );
-        light1.target.position = new THREE.Object3D( 0, 0, 0 );
+        light1.target.position.set( 0, 0, 0 );
+        light1.target.position.set( 0, 0, 0 );
 
         light1.shadowMapWidth  =  light2.shadowMapWidth = 1024;
         light1.shadowMapHeight =  light2.shadowMapHeight = 1024;
