@@ -1,4 +1,3 @@
-
 # Chess Viewer
 Chess Viewer es una aplicación que carga partidas de ajedrez guardadas en formato PGN, y permite reproducirlas con un visor en 3D.
 
