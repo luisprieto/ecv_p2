@@ -320,6 +320,12 @@ $(document).ready(function () {
         else  $("#result").html("");      
     };
 
+    /**
+     * Devuelve el id de una pieza con su letra como parámetro
+     * @param {string} letter - Letra de la pieza
+     * @memberof ChessViewer
+     * @returns {string}
+     */
     function getPieceName(letter){
         var name = '';
         switch(letter){
